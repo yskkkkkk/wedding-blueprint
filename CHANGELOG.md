@@ -1,18 +1,19 @@
-# Changelog
+# AI 인수인계 및 프로젝트 상태 요약 (CHANGELOG)
 
-모든 AI 에이전트는 작업 종료 전 이 문서에 작업 내역을 상세히 기록해야 합니다.
+이 문서는 본 프로젝트에 참여하는 AI 에이전트 간의 컨텍스트 인수인계를 목적으로 합니다.
+단순한 코드 수정 이력(Git Commit)이 아닌, 현재의 아키텍처 상태, 중요한 설계 결정, 그리고 다음 작업자를 위한 가이드를 요약합니다.
 
-## [Unreleased]
-### Added
-- `vite.config.ts` 및 `tsconfig.app.json`에 절대 경로 별칭(`@/*`) 설정 추가
-- `src/components/Layout.tsx` 생성하여 라우팅 하위 컴포넌트들을 모바일 컨테이너로 감싸도록 구성
-- `react-router-dom` 및 `framer-motion` 라이브러리 추가
-- `src/components`, `src/hooks`, `src/pages`, `src/services`, `src/types` 디렉터리 스캐폴딩
-- `src/pages/InvitationPage.tsx` 기본 페이지 추가
-- `src/index.css`에 디자인 가이드(우아하고 따뜻한 톤앤매너)에 맞춘 글로벌 CSS Variables 설정
+---
 
-### Changed
-- `src/App.tsx` 파일 내용을 `react-router-dom`의 동적 라우팅 설정으로 교체 (Vite 보일러플레이트 코드 제거)
+## 🏗 현재 시스템 아키텍처 및 설정
+*   **라우팅 방식**: `react-router-dom`을 사용하며 최상단에 `Layout.tsx`(모바일 사이즈 컨테이너)를 두고 `/:invitationSlug` 패턴으로 렌더링.
+*   **스타일링 전략**: Tailwind 없이 `index.css`의 CSS Variables 기반. (우아하고 따뜻한 오프화이트/골드 톤 적용)
+*   **경로 별칭**: `@/*` 매핑을 통해 `src/*` 폴더 접근 (Vite 및 TS 설정 완료).
 
-### Removed
-- `src/App.css` (불필요한 기본 스타일 제거)
+## 📝 주요 의사결정 내역 (Key Decisions)
+1.  **Supabase 연동 보류**: DB 세팅을 후순위로 미루고 프론트엔드 UI/라우팅 뼈대부터 완성하기로 결정됨.
+2.  **보일러플레이트 완전 제거**: Vite 기본 템플릿(App.css 등)은 완전히 삭제되고 모바일 청첩장에 맞는 480px 레이아웃 기준으로 재편됨.
+
+## 🚀 다음 작업자를 위한 가이드 (Next Steps)
+*   아직 실제 UI 컴포넌트(Cover, Gallery, Guestbook 등)가 없는 상태입니다.
+*   새로운 UI 개발을 시작할 때는 반드시 `CONTENT_STYLE_GUIDE.md`를 참고하여 따뜻하고 정중한 어투와 디자인 톤을 유지해야 합니다.

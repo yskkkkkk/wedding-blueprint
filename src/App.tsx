@@ -1,12 +1,15 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import InvitationPage from './pages/InvitationPage';
+import Layout from '@/components/Layout';
+import InvitationPage from '@/pages/InvitationPage';
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/demo-wedding" replace />} />
-        <Route path="/:invitationSlug" element={<InvitationPage />} />
+        <Route element={<Layout />}>
+          <Route path="/" element={<Navigate to="/demo-wedding" replace />} />
+          <Route path="/:invitationSlug" element={<InvitationPage />} />
+        </Route>
       </Routes>
     </Router>
   );

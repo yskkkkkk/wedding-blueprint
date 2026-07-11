@@ -3,7 +3,7 @@ import { InvitationData } from '@/types';
 import classes from './Guestbook.module.css';
 
 interface GuestbookProps {
-  data?: InvitationData;
+  data: InvitationData;
 }
 
 export default function Guestbook({ data }: GuestbookProps) {

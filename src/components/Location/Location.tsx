@@ -3,7 +3,7 @@ import { InvitationData } from '@/types';
 import classes from './Location.module.css';
 
 interface LocationProps {
-  data?: InvitationData;
+  data: InvitationData;
 }
 
 export default function Location({ data }: LocationProps) {

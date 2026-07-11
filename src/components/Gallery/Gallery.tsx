@@ -3,7 +3,7 @@ import { InvitationData } from '@/types';
 import classes from './Gallery.module.css';
 
 interface GalleryProps {
-  data?: InvitationData;
+  data: InvitationData;
 }
 
 export default function Gallery({ data }: GalleryProps) {

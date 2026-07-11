@@ -3,7 +3,7 @@ import { InvitationData } from '@/types';
 import classes from './Account.module.css';
 
 interface AccountProps {
-  data?: InvitationData;
+  data: InvitationData;
 }
 
 export default function Account({ data }: AccountProps) {

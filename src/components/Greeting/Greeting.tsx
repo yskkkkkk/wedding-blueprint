@@ -3,7 +3,7 @@ import { InvitationData } from '@/types';
 import classes from './Greeting.module.css';
 
 interface GreetingProps {
-  data?: InvitationData;
+  data: InvitationData;
 }
 
 export default function Greeting({ data }: GreetingProps) {

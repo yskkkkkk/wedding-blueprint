@@ -1,5 +1,10 @@
 import { useParams } from 'react-router-dom';
 import { Cover } from '@/components/Cover';
+import { Greeting } from '@/components/Greeting';
+import { Gallery } from '@/components/Gallery';
+import { Location } from '@/components/Location';
+import { Account } from '@/components/Account';
+import { Guestbook } from '@/components/Guestbook';
 import { InvitationData } from '@/types';
 
 // Mock data for development
@@ -38,12 +43,11 @@ export default function InvitationPage() {
   return (
     <div>
       <Cover data={mockData} />
-      {/* 
-      TODO: Add other components here 
       <Greeting data={mockData} />
-      <Gallery images={mockData.galleryImages} />
-      ...
-      */}
+      <Gallery data={mockData} />
+      <Location data={mockData} />
+      <Account data={mockData} />
+      <Guestbook data={mockData} />
     </div>
   );
 }

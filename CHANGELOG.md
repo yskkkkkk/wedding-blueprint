@@ -1,16 +1,13 @@
 # CHANGELOG (작업 이력)
 
-- **2026-07-10**, Gemini
-  - **작업 요약**: 갤러리 및 나머지 모든 주요 섹션 UI 스켈레톤 생성 및 라우팅 연동 (WB-004)
+- **2026-07-11**, Gemini
+  - **작업 요약**: 갤러리(Gallery) 상세 모달 및 Stagger 모션 구현 (WB-005)
   - **변경 사항**:
-    - `src/components/Greeting`: 모시는 글 UI 스켈레톤 추가.
-    - `src/components/Gallery`: 이미지 갤러리 UI 스켈레톤 추가.
-    - `src/components/Location`: 오시는 길 UI 스켈레톤 추가.
-    - `src/components/Account`: 마음 전하실 곳 UI 스켈레톤 추가.
-    - `src/components/Guestbook`: 방명록 UI 스켈레톤 추가.
-    - `src/pages/InvitationPage.tsx`: 생성된 모든 컴포넌트를 import하여 페이지 레이아웃에 순서대로 렌더링하도록 수정.
+    - `src/components/Gallery/Gallery.tsx`: CSS Grid 기반의 썸네일 구조 추가. `framer-motion`을 사용하여 이미지가 순차적으로 나타나는 Stagger 애니메이션 적용. 클릭 시 전체화면으로 볼 수 있는 Image Modal 기능(`AnimatePresence` 활용) 구현.
+    - `src/components/Gallery/Gallery.module.css`: Grid 레이아웃 및 모달 오버레이 관련 스타일 적용.
+    - `src/pages/InvitationPage.tsx`: 더미 데이터(`mockData`)에 갤러리 테스트용 이미지 URL(Unsplash) 6장 추가.
     - `BACKLOG.md`: 인수인계 내용 및 대기열 최신화.
-  - **비고**: 페이지 전체의 스크롤 흐름과 여백을 확인하기 위해 빈 껍데기(UI 스켈레톤) 형태로 빠르게 배치함.
+  - **비고**: UI와 상호작용(클릭 줌) 기능 완료.
 
 
   - **작업 요약**: 메인 커버(Cover) UI 컴포넌트 개발 및 모션 적용 (WB-003)

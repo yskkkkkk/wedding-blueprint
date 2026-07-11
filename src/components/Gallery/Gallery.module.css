@@ -7,23 +7,86 @@
   align-items: center;
 }
 
-.container {
-  width: 100%;
-  max-width: 400px;
+.title {
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--color-primary, #d4a373);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
   text-align: center;
-  padding: 2rem;
-  border: 1px dashed var(--color-primary, #d4a373);
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary, #666);
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 480px;
+}
+
+@media (max-width: 350px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.imageWrapper {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.imageWrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.imageWrapper:hover img {
+  transform: scale(1.05);
+}
+
+/* Modal Styles */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modalImage {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
   border-radius: 8px;
 }
 
-.title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-text-primary, #333);
-  margin-bottom: 1rem;
-}
-
-.placeholder {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary, #666);
+.closeButton {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
 }

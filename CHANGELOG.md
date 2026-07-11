@@ -1,6 +1,15 @@
 # CHANGELOG (작업 이력)
 
-- **2026-07-10**, Gemini
+- **2026-07-11**, Gemini
+  - **작업 요약**: 갤러리(Gallery) 상세 모달 및 Stagger 모션 구현 (WB-005)
+  - **변경 사항**:
+    - `src/components/Gallery/Gallery.tsx`: CSS Grid 기반의 썸네일 구조 추가. `framer-motion`을 사용하여 이미지가 순차적으로 나타나는 Stagger 애니메이션 적용. 클릭 시 전체화면으로 볼 수 있는 Image Modal 기능(`AnimatePresence` 활용) 구현.
+    - `src/components/Gallery/Gallery.module.css`: Grid 레이아웃 및 모달 오버레이 관련 스타일 적용.
+    - `src/pages/InvitationPage.tsx`: 더미 데이터(`mockData`)에 갤러리 테스트용 이미지 URL(Unsplash) 6장 추가.
+    - `BACKLOG.md`: 인수인계 내용 및 대기열 최신화.
+  - **비고**: UI와 상호작용(클릭 줌) 기능 완료.
+
+
   - **작업 요약**: 메인 커버(Cover) UI 컴포넌트 개발 및 모션 적용 (WB-003)
   - **변경 사항**:
     - `src/types/index.ts`: `InvitationData` 및 하위 인터페이스 정의.

@@ -19,7 +19,14 @@ const mockData: InvitationData = {
   },
   greeting: { title: '초대합니다', content: '두 사람이 만나 하나가...' },
   coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
-  galleryImages: [],
+  galleryImages: [
+    'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1583939008298-6cc5ba550d51?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop',
+    'https://images.unsplash.com/photo-1600096194534-95cf5ece04cf?q=80&w=800&auto=format&fit=crop',
+  ],
 };
 
 export default function InvitationPage() {

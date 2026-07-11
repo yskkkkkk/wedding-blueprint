@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { InvitationData } from '@/types';
 import FadeIn from '@/components/shared/FadeIn';
@@ -11,6 +11,18 @@ interface GalleryProps {
 export default function Gallery({ data }: GalleryProps) {
   const images = data?.galleryImages || [];
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    if (selectedImage) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [selectedImage]);
 
   if (images.length === 0) return null;
 

@@ -59,6 +59,31 @@
   height: 250px;
 }
 
+.fallbackContainer {
+  width: 100%;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  color: #888;
+  text-align: center;
+  padding: 2rem;
+}
+
+.fallbackText {
+  font-size: 1rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: #666;
+}
+
+.fallbackSubtext {
+  font-size: 0.85rem;
+  color: #999;
+}
+
 .navButtons {
   display: flex;
   gap: 0.5rem;

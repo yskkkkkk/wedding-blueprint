@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import FadeIn from '@/components/shared/FadeIn';
 import { InvitationData } from '@/types';
 import classes from './Location.module.css';
@@ -15,13 +15,19 @@ interface LocationProps {
 
 export default function Location({ data }: LocationProps) {
   const mapRef = useRef<HTMLDivElement>(null);
+  const [mapError, setMapError] = useState(false);
   const { name, address, latitude, longitude } = data.location;
 
   useEffect(() => {
+    // Check if the Kakao object is available
     if (!window.kakao || !window.kakao.maps) {
       console.error('Kakao map API not loaded. Check VITE_KAKAO_MAP_KEY in .env');
+      setMapError(true);
       return;
     }
+
+    // API is loaded, we can reset error state
+    setMapError(false);
 
     // Initialize map after API is fully loaded
     window.kakao.maps.load(() => {
@@ -67,7 +73,14 @@ export default function Location({ data }: LocationProps) {
         </div>
 
         <div className={classes.mapWrapper}>
-          <div ref={mapRef} className={classes.map}></div>
+          {mapError ? (
+            <div className={classes.fallbackContainer}>
+              <p className={classes.fallbackText}>지도를 불러올 수 없습니다.</p>
+              <p className={classes.fallbackSubtext}>아래 내비게이션 버튼을 이용해 주세요.</p>
+            </div>
+          ) : (
+            <div ref={mapRef} className={classes.map}></div>
+          )}
         </div>
 
         <div className={classes.navButtons}>

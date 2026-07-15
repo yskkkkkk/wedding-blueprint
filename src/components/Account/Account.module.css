@@ -1,29 +1,175 @@
 .section {
   width: 100%;
   padding: 4rem 2rem;
-  background-color: var(--color-background, #fdfcfb);
+  background-color: var(--color-background-alt, #fff);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.container {
-  width: 100%;
-  max-width: 400px;
+.header {
   text-align: center;
-  padding: 2rem;
-  border: 1px dashed var(--color-primary, #d4a373);
-  border-radius: 8px;
+  margin-bottom: 2rem;
 }
 
 .title {
   font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-text-primary, #333);
-  margin-bottom: 1rem;
+  font-weight: 400;
+  color: var(--color-primary, #d4a373);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.5rem;
 }
 
-.placeholder {
+.subtitle {
   font-size: 0.95rem;
   color: var(--color-text-secondary, #666);
+}
+
+.container {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.accordion {
+  border: 1px solid #eaeaea;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fafafa;
+}
+
+.accordionHeader {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #333);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.accordionHeader:active {
+  background-color: #f0f0f0;
+}
+
+.arrow {
+  font-size: 0.7rem;
+  color: #999;
+  transition: transform 0.3s ease;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.accordionContent {
+  overflow: hidden;
+  background-color: #fff;
+  border-top: 1px solid #eaeaea;
+}
+
+.accountList {
+  padding: 1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.accountRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px dashed #eaeaea;
+}
+
+.accountRow:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.accountRole {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary, #666);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.accountName {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #333);
+}
+
+.accountDetails {
+  font-size: 0.95rem;
+  color: var(--color-text-primary, #333);
+  font-family: monospace;
+  letter-spacing: 0.05em;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.payBtn, .copyBtn {
+  flex: 1;
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+  border: none;
+}
+
+.payBtn {
+  background-color: #f1f3f5;
+  color: #495057;
+}
+
+.payBtn:active {
+  background-color: #e9ecef;
+}
+
+.copyBtn {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #dee2e6;
+}
+
+.copyBtn:active {
+  background-color: #e9ecef;
+}
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

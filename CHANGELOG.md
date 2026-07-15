@@ -1,6 +1,14 @@
 # CHANGELOG (작업 이력)
 
 - **2026-07-15**, Gemini
+  - **작업 요약**: 마음 전하실 곳(Account) 계좌번호 아코디언 및 송금 딥링크 구현 (WB-007)
+  - **변경 사항**:
+    - `src/pages/InvitationPage.tsx`: `mockData` 내 신랑/신부/혼주 별 `bank` 및 간편 송금 링크 데이터 추가.
+    - `src/components/Account/Account.tsx`: `framer-motion`을 활용한 신랑측/신부측 아코디언 컴포넌트 내부 구현. Clipboard API를 활용한 계좌번호 복사 및 토스트(Toast) 알림 기능 연동. 토스/카카오페이 송금 딥링크 버튼 연동.
+    - `src/components/Account/Account.module.css`: 아코디언 열림/닫힘 UI 및 토스트 팝업, 딥링크 버튼 최적화 스타일링.
+  - **비고**: 별도의 서드파티 라이브러리 추가 없이 Framer Motion을 적극 활용하여 모바일 최적화 UX 구현.
+
+
   - **작업 요약**: 오시는 길(Location) 섹션 카카오맵 원시 API 및 내비게이션 딥링크 연동 (WB-006)
   - **변경 사항**:
     - `index.html`: 카카오맵 JavaScript SDK 로드용 동적 스크립트 태그 추가 (`%VITE_KAKAO_MAP_KEY%` 활용).

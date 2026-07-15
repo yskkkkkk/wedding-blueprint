@@ -11,10 +11,26 @@ import { InvitationData } from '@/types';
 const mockData: InvitationData = {
   id: '1',
   slug: 'demo-wedding',
-  groom: { name: '김신랑', relation: '아들' },
-  bride: { name: '이신부', relation: '딸' },
-  groomParents: { father: { name: '김아버지', relation: '아버지' }, mother: { name: '박어머니', relation: '어머니' } },
-  brideParents: { father: { name: '이아버지', relation: '아버지' }, mother: { name: '최어머니', relation: '어머니' } },
+  groom: { 
+    name: '김신랑', 
+    relation: '아들',
+    bank: { name: '신한은행', accountNumber: '110-123-456789', holder: '김신랑' },
+    kakaopayLink: 'https://qr.kakaopay.com/Ej1234567'
+  },
+  bride: { 
+    name: '이신부', 
+    relation: '딸',
+    bank: { name: '국민은행', accountNumber: '910-123-456789', holder: '이신부' },
+    tossLink: 'https://toss.me/leebribe'
+  },
+  groomParents: { 
+    father: { name: '김아버지', relation: '아버지', bank: { name: '우리은행', accountNumber: '1002-123-456789', holder: '김아버지' } }, 
+    mother: { name: '박어머니', relation: '어머니', bank: { name: '농협은행', accountNumber: '302-1234-5678-91', holder: '박어머니' } } 
+  },
+  brideParents: { 
+    father: { name: '이아버지', relation: '아버지', bank: { name: '하나은행', accountNumber: '123-456789-12345', holder: '이아버지' } }, 
+    mother: { name: '최어머니', relation: '어머니' } 
+  },
   weddingDate: '2026-10-25T12:30:00',
   location: {
     name: '더그레이스켈리 강남 1층 아모르홀',

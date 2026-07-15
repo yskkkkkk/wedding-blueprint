@@ -1,6 +1,16 @@
 # CHANGELOG (작업 이력)
 
-- **2026-07-11**, Gemini
+- **2026-07-15**, Gemini
+  - **작업 요약**: 오시는 길(Location) 섹션 카카오맵 원시 API 및 내비게이션 딥링크 연동 (WB-006)
+  - **변경 사항**:
+    - `index.html`: 카카오맵 JavaScript SDK 로드용 동적 스크립트 태그 추가 (`%VITE_KAKAO_MAP_KEY%` 활용).
+    - `.env.example`: 개발자 안내용 `VITE_KAKAO_MAP_KEY` 필드 추가.
+    - `src/components/Location/Location.tsx`: `window.kakao.maps` API를 직접 호출하여 맵 렌더링 및 마커 추가 로직 구현. 카카오내비, 티맵, 네이버지도 앱 호출용 딥링크 버튼 추가.
+    - `src/components/Location/Location.module.css`: 지도 컨테이너 및 버튼 스타일링.
+    - `BACKLOG.md`: 작업 대기열 최신화.
+  - **비고**: 라이브러리를 추가하지 않고 가벼운 원시 API 방식으로 구현 완료.
+
+
   - **작업 요약**: 갤러리(Gallery) 상세 모달 및 Stagger 모션 구현 (WB-005)
   - **변경 사항**:
     - `src/components/Gallery/Gallery.tsx`: CSS Grid 기반의 썸네일 구조 추가. `framer-motion`을 사용하여 이미지가 순차적으로 나타나는 Stagger 애니메이션 적용. 클릭 시 전체화면으로 볼 수 있는 Image Modal 기능(`AnimatePresence` 활용) 구현.

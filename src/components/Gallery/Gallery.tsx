@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { InvitationData } from '@/types';
+import type { InvitationData } from '@/types';
 import FadeIn from '@/components/shared/FadeIn';
 import classes from './Gallery.module.css';
 
@@ -40,7 +40,7 @@ export default function Gallery({ data }: GalleryProps) {
   // Animation variants for each image item
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
   };
 
   return (
@@ -96,7 +96,7 @@ export default function Gallery({ data }: GalleryProps) {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-              onClick={(e) => e.stopPropagation()} // Prevent closing when clicking the image itself
+              onClick={(e: React.MouseEvent) => e.stopPropagation()} // Prevent closing when clicking the image itself
             />
           </motion.div>
         )}

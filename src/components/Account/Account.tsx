@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FadeIn from '@/components/shared/FadeIn';
-import { InvitationData, Person } from '@/types';
+import type { InvitationData, Person } from '@/types';
 import classes from './Account.module.css';
 
 interface AccountProps {

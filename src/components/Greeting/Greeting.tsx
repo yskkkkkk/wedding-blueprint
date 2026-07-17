@@ -1,5 +1,5 @@
 import FadeIn from '@/components/shared/FadeIn';
-import { InvitationData } from '@/types';
+import type { InvitationData } from '@/types';
 import classes from './Greeting.module.css';
 
 interface GreetingProps {

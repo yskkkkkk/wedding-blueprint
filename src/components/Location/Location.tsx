@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import FadeIn from '@/components/shared/FadeIn';
-import { InvitationData } from '@/types';
+import type { InvitationData } from '@/types';
 import classes from './Location.module.css';
 
 declare global {

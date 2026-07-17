@@ -5,7 +5,7 @@ import { Gallery } from '@/components/Gallery';
 import { Location } from '@/components/Location';
 import { Account } from '@/components/Account';
 import { Guestbook } from '@/components/Guestbook';
-import { InvitationData } from '@/types';
+import type { InvitationData } from '@/types';
 
 // Mock data for development
 const mockData: InvitationData = {

@@ -51,7 +51,7 @@ const mockData: InvitationData = {
 };
 
 export default function InvitationPage() {
-  const { invitationSlug } = useParams<{ invitationSlug: string }>();
+  const { invitationSlug: _invitationSlug } = useParams<{ invitationSlug: string }>();
 
   // In the future, fetch data from Supabase using invitationSlug
   // const { data, loading, error } = useInvitationData(invitationSlug);

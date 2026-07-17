@@ -82,6 +82,7 @@ export default function Account({ data }: AccountProps) {
             <button
               className={classes.accordionHeader}
               onClick={() => toggleSection('groom')}
+              aria-expanded={openSection === 'groom'}
             >
               신랑측 계좌번호
               <span className={`${classes.arrow} ${openSection === 'groom' ? classes.open : ''}`}>
@@ -112,6 +113,7 @@ export default function Account({ data }: AccountProps) {
             <button
               className={classes.accordionHeader}
               onClick={() => toggleSection('bride')}
+              aria-expanded={openSection === 'bride'}
             >
               신부측 계좌번호
               <span className={`${classes.arrow} ${openSection === 'bride' ? classes.open : ''}`}>

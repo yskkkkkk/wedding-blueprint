@@ -6,7 +6,7 @@ interface GreetingProps {
   data: InvitationData;
 }
 
-export default function Greeting({ data }: GreetingProps) {
+export default function Greeting({ data: _data }: GreetingProps) {
   return (
     <section className={classes.section}>
       <FadeIn yOffset={20} duration={0.8}>

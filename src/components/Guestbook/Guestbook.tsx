@@ -6,7 +6,7 @@ interface GuestbookProps {
   data: InvitationData;
 }
 
-export default function Guestbook({ data }: GuestbookProps) {
+export default function Guestbook({ data: _data }: GuestbookProps) {
   return (
     <section className={classes.section}>
       <FadeIn yOffset={20} duration={0.8}>

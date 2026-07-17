@@ -1,5 +1,12 @@
 # CHANGELOG (작업 이력)
 
+- **2026-07-17**, Gemini
+  - **작업 요약**: 코드 안정성(Lint) 및 접근성(A11y) 개선 작업
+  - **변경 사항**:
+    - `src/pages/InvitationPage.tsx`, `Guestbook.tsx`, `Greeting.tsx`: 미사용 변수(unused-vars) 경고 해결을 위한 언더스코어(`_`) 접두사 추가. Oxlint 경고 0건 달성.
+    - `src/components/Account/Account.tsx`: 시각장애인용 스크린 리더 접근성을 위한 `aria-expanded` 속성 아코디언 버튼에 추가.
+  - **비고**: 오류사항 개선 및 문서 현행화 완료.
+
 - **2026-07-15**, Gemini
   - **작업 요약**: 마음 전하실 곳(Account) 계좌번호 아코디언 및 송금 딥링크 구현 (WB-007)
   - **변경 사항**:

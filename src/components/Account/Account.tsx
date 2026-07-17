@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import FadeIn from '@/components/shared/FadeIn';
-import { InvitationData, Person } from '@/types';
+import type { InvitationData, Person } from '@/types';
 import classes from './Account.module.css';
 
 interface AccountProps {
@@ -82,6 +82,7 @@ export default function Account({ data }: AccountProps) {
             <button
               className={classes.accordionHeader}
               onClick={() => toggleSection('groom')}
+              aria-expanded={openSection === 'groom'}
             >
               신랑측 계좌번호
               <span className={`${classes.arrow} ${openSection === 'groom' ? classes.open : ''}`}>
@@ -112,6 +113,7 @@ export default function Account({ data }: AccountProps) {
             <button
               className={classes.accordionHeader}
               onClick={() => toggleSection('bride')}
+              aria-expanded={openSection === 'bride'}
             >
               신부측 계좌번호
               <span className={`${classes.arrow} ${openSection === 'bride' ? classes.open : ''}`}>

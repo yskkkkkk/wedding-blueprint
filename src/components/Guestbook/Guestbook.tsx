@@ -1,12 +1,12 @@
 import FadeIn from '@/components/shared/FadeIn';
-import { InvitationData } from '@/types';
+import type { InvitationData } from '@/types';
 import classes from './Guestbook.module.css';
 
 interface GuestbookProps {
   data: InvitationData;
 }
 
-export default function Guestbook({ data }: GuestbookProps) {
+export default function Guestbook({ data: _data }: GuestbookProps) {
   return (
     <section className={classes.section}>
       <FadeIn yOffset={20} duration={0.8}>

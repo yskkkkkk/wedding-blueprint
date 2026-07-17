@@ -5,7 +5,7 @@ import { Gallery } from '@/components/Gallery';
 import { Location } from '@/components/Location';
 import { Account } from '@/components/Account';
 import { Guestbook } from '@/components/Guestbook';
-import { InvitationData } from '@/types';
+import type { InvitationData } from '@/types';
 
 // Mock data for development
 const mockData: InvitationData = {
@@ -51,7 +51,7 @@ const mockData: InvitationData = {
 };
 
 export default function InvitationPage() {
-  const { invitationSlug } = useParams<{ invitationSlug: string }>();
+  const { invitationSlug: _invitationSlug } = useParams<{ invitationSlug: string }>();
 
   // In the future, fetch data from Supabase using invitationSlug
   // const { data, loading, error } = useInvitationData(invitationSlug);

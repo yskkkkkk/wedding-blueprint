@@ -1,0 +1,27 @@
+.fullScreenCenter {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--color-background-primary, #fcfcfc);
+  color: var(--color-text-primary, #333);
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(212, 163, 115, 0.2);
+  border-radius: 50%;
+  border-top-color: var(--color-primary, #d4a373);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -283,3 +283,28 @@
 .backBtn:hover {
   background-color: #eaeaea;
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboardMain {
+    padding: 1rem;
+  }
+  
+  .dashboardHeader {
+    padding: 1rem;
+  }
+
+  .loginBox {
+    margin: 1rem;
+    padding: 2rem 1.5rem;
+  }
+
+  .builderSection {
+    padding: 1.5rem;
+  }
+
+  .formRow {
+    grid-template-columns: 1fr; /* Stack columns on mobile */
+    gap: 0;
+  }
+}

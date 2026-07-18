@@ -65,7 +65,7 @@ export default function AdminDashboard() {
       
       <main className={classes.dashboardMain}>
         <div className={classes.actionRow}>
-          <button className={classes.createBtn}>+ 새 청첩장 만들기</button>
+          <button className={classes.createBtn} onClick={() => navigate('/admin/builder')}>+ 새 청첩장 만들기</button>
         </div>
 
         <div className={classes.cardGrid}>

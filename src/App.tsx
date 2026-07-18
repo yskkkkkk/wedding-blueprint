@@ -4,6 +4,7 @@ import InvitationPage from '@/pages/InvitationPage';
 
 import AdminLogin from '@/pages/admin/AdminLogin';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
+import InvitationBuilder from '@/pages/admin/InvitationBuilder';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         {/* Admin Routes - Must be before the slug route */}
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/builder" element={<InvitationBuilder />} />
 
         {/* Guest View Routes */}
         <Route element={<Layout />}>

@@ -5,65 +5,39 @@ import { Gallery } from '@/components/Gallery';
 import { Location } from '@/components/Location';
 import { Account } from '@/components/Account';
 import { Guestbook } from '@/components/Guestbook';
-import type { InvitationData } from '@/types';
-
-// Mock data for development
-const mockData: InvitationData = {
-  id: '1',
-  slug: 'demo-wedding',
-  groom: { 
-    name: '김신랑', 
-    relation: '아들',
-    bank: { name: '신한은행', accountNumber: '110-123-456789', holder: '김신랑' },
-    kakaopayLink: 'https://qr.kakaopay.com/Ej1234567'
-  },
-  bride: { 
-    name: '이신부', 
-    relation: '딸',
-    bank: { name: '국민은행', accountNumber: '910-123-456789', holder: '이신부' },
-    tossLink: 'https://toss.me/leebribe'
-  },
-  groomParents: { 
-    father: { name: '김아버지', relation: '아버지', bank: { name: '우리은행', accountNumber: '1002-123-456789', holder: '김아버지' } }, 
-    mother: { name: '박어머니', relation: '어머니', bank: { name: '농협은행', accountNumber: '302-1234-5678-91', holder: '박어머니' } } 
-  },
-  brideParents: { 
-    father: { name: '이아버지', relation: '아버지', bank: { name: '하나은행', accountNumber: '123-456789-12345', holder: '이아버지' } }, 
-    mother: { name: '최어머니', relation: '어머니' } 
-  },
-  weddingDate: '2026-10-25T12:30:00',
-  location: {
-    name: '더그레이스켈리 강남 1층 아모르홀',
-    address: '서울 강남구 언주로 123',
-    latitude: 37.512,
-    longitude: 127.034,
-  },
-  greeting: { title: '초대합니다', content: '두 사람이 만나 하나가...' },
-  coverImage: 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1000&auto=format&fit=crop',
-  galleryImages: [
-    'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1583939008298-6cc5ba550d51?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1606800052052-a08af7148866?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=800&auto=format&fit=crop',
-    'https://images.unsplash.com/photo-1600096194534-95cf5ece04cf?q=80&w=800&auto=format&fit=crop',
-  ],
-};
+import { useInvitationData } from '@/hooks/useInvitationData';
+import classes from './InvitationPage.module.css'; // We will create this for loading/error styling
 
 export default function InvitationPage() {
-  const { invitationSlug: _invitationSlug } = useParams<{ invitationSlug: string }>();
-
-  // In the future, fetch data from Supabase using invitationSlug
-  // const { data, loading, error } = useInvitationData(invitationSlug);
+  const { invitationSlug } = useParams<{ invitationSlug: string }>();
+  const { data, loading, error } = useInvitationData(invitationSlug);
   
+  if (loading) {
+    return (
+      <div className={classes.fullScreenCenter}>
+        <div className={classes.spinner}></div>
+        <p>청첩장을 불러오는 중입니다...</p>
+      </div>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <div className={classes.fullScreenCenter}>
+        <h2>존재하지 않는 청첩장입니다.</h2>
+        <p>URL 주소를 다시 한 번 확인해 주세요.</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <Cover data={mockData} />
-      <Greeting data={mockData} />
-      <Gallery data={mockData} />
-      <Location data={mockData} />
-      <Account data={mockData} />
-      <Guestbook data={mockData} />
+      <Cover data={data} />
+      <Greeting data={data} />
+      <Gallery data={data} />
+      <Location data={data} />
+      <Account data={data} />
+      <Guestbook data={data} />
     </div>
   );
 }

@@ -2,10 +2,18 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Layout from '@/components/Layout';
 import InvitationPage from '@/pages/InvitationPage';
 
+import AdminLogin from '@/pages/admin/AdminLogin';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+
 function App() {
   return (
     <Router>
       <Routes>
+        {/* Admin Routes - Must be before the slug route */}
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+
+        {/* Guest View Routes */}
         <Route element={<Layout />}>
           <Route path="/" element={<Navigate to="/demo-wedding" replace />} />
           <Route path="/:invitationSlug" element={<InvitationPage />} />

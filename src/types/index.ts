@@ -34,3 +34,12 @@ export interface InvitationData {
   coverImage: string;
   galleryImages: string[];
 }
+
+export interface GuestbookEntry {
+  id: string;
+  invitation_slug: string;
+  name: string;
+  password?: string; // We might not fetch password to frontend for security, but we need it for inserting
+  content: string;
+  created_at: string;
+}

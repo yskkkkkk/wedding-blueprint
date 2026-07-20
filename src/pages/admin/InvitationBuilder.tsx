@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/services/supabase';
 import classes from './Admin.module.css';
 
 export default function InvitationBuilder() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const editSlug = searchParams.get('edit');
   const [authChecked, setAuthChecked] = useState(false);
 
   // Form State
@@ -50,6 +52,76 @@ export default function InvitationBuilder() {
     }
     checkAuth();
   }, [navigate]);
+
+  useEffect(() => {
+    async function fetchEditData() {
+      if (!editSlug) return;
+      
+      const { data, error } = await supabase
+        .from('invitations')
+        .select('*')
+        .eq('slug', editSlug)
+        .single();
+        
+      if (data) {
+        setSlug(data.slug);
+        
+        // Format datetime for datetime-local input (YYYY-MM-DDThh:mm)
+        const dateObj = new Date(data.wedding_date);
+        const tzOffset = dateObj.getTimezoneOffset() * 60000;
+        const localISOTime = (new Date(dateObj.getTime() - tzOffset)).toISOString().slice(0, 16);
+        setWeddingDate(localISOTime);
+        
+        setGroomName(data.groom?.name || '');
+        setGroomRelation(data.groom?.relation || '');
+        setBrideName(data.bride?.name || '');
+        setBrideRelation(data.bride?.relation || '');
+        
+        setParents({
+          groomFather: data.groom_parents?.father?.name || '',
+          groomMother: data.groom_parents?.mother?.name || '',
+          brideFather: data.bride_parents?.father?.name || '',
+          brideMother: data.bride_parents?.mother?.name || ''
+        });
+        
+        setWeddingHall(data.location?.name || '');
+        setAddress(data.location?.address || '');
+        setCoverImage(data.cover_image || '');
+        
+        setGreeting({
+          title: data.greeting?.title || '',
+          content: data.greeting?.content || ''
+        });
+        
+        if (data.groom?.bank) {
+          setGroomAccount({
+            bankName: data.groom.bank.name || '',
+            accountNumber: data.groom.bank.accountNumber || '',
+            holder: data.groom.bank.holder || '',
+            tossLink: data.groom.tossLink || '',
+            kakaopayLink: data.groom.kakaopayLink || ''
+          });
+        }
+        
+        if (data.bride?.bank) {
+          setBrideAccount({
+            bankName: data.bride.bank.name || '',
+            accountNumber: data.bride.bank.accountNumber || '',
+            holder: data.bride.bank.holder || '',
+            tossLink: data.bride.tossLink || '',
+            kakaopayLink: data.bride.kakaopayLink || ''
+          });
+        }
+        
+        if (data.gallery_images) {
+          setGalleryUrls(data.gallery_images.join(', '));
+        }
+      } else if (error) {
+        console.error('Error fetching edit data:', error);
+      }
+    }
+    fetchEditData();
+  }, [editSlug]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -122,18 +194,28 @@ export default function InvitationBuilder() {
         gallery_images: galleryArray
       };
 
-      const { error: insertError } = await supabase
-        .from('invitations')
-        .insert([newInvitation]);
+      if (editSlug) {
+        const { error: updateError } = await supabase
+          .from('invitations')
+          .update(newInvitation)
+          .eq('slug', editSlug);
 
-      if (insertError) {
-        if (insertError.code === '23505') { // Unique violation
-          throw new Error('이미 사용 중인 주소(Slug)입니다. 다른 주소를 입력해주세요.');
+        if (updateError) throw updateError;
+        alert('성공적으로 청첩장이 수정되었습니다!');
+      } else {
+        const { error: insertError } = await supabase
+          .from('invitations')
+          .insert([newInvitation]);
+
+        if (insertError) {
+          if (insertError.code === '23505') { // Unique violation
+            throw new Error('이미 사용 중인 주소(Slug)입니다. 다른 주소를 입력해주세요.');
+          }
+          throw insertError;
         }
-        throw insertError;
+        alert('성공적으로 청첩장이 생성되었습니다!');
       }
 
-      alert('성공적으로 청첩장이 생성되었습니다!');
       navigate('/admin/dashboard');
     } catch (err: any) {
       setError(err.message || '청첩장 생성 중 오류가 발생했습니다.');
@@ -151,7 +233,7 @@ export default function InvitationBuilder() {
       <header className={classes.dashboardHeader}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
           <Link to="/admin/dashboard" className={classes.backBtn}>← 뒤로가기</Link>
-          <h2>새 청첩장 만들기</h2>
+          <h2>{editSlug ? '청첩장 수정하기' : '새 청첩장 만들기'}</h2>
         </div>
       </header>
       
@@ -169,6 +251,8 @@ export default function InvitationBuilder() {
                 value={slug}
                 onChange={e => setSlug(e.target.value.toLowerCase())}
                 required
+                disabled={!!editSlug}
+                style={{ backgroundColor: editSlug ? '#f0f0f0' : 'white' }}
               />
             </div>
             <div className={classes.inputGroup}>
@@ -327,7 +411,7 @@ export default function InvitationBuilder() {
 
           <div className={classes.builderActions}>
             <button type="submit" className={classes.submitBtn} style={{ width: '100%', padding: '1rem', fontSize: '1.1rem' }} disabled={isSubmitting}>
-              {isSubmitting ? '생성 중...' : '청첩장 생성하기'}
+              {isSubmitting ? '저장 중...' : (editSlug ? '청첩장 수정하기' : '청첩장 생성하기')}
             </button>
           </div>
         </form>

@@ -80,7 +80,7 @@ export default function AdminDashboard() {
                   <p>주소: /{inv.slug}</p>
                   <p>예식일: {new Date(inv.weddingDate).toLocaleDateString('ko-KR')}</p>
                   <div className={classes.cardActions}>
-                    <button className={classes.editBtn}>수정</button>
+                    <button className={classes.editBtn} onClick={() => navigate(`/admin/builder?edit=${inv.slug}`)}>수정</button>
                     <a href={`/${inv.slug}`} target="_blank" rel="noreferrer" className={classes.viewBtn}>보기</a>
                   </div>
                 </div>

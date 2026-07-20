@@ -1,6 +1,6 @@
 export interface Person {
   name: string;
-  relation: string;
+  relation?: string;
   phone?: string;
   bank?: {
     name: string;

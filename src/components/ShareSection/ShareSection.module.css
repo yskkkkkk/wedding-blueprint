@@ -1,0 +1,51 @@
+.shareSection {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  background-color: #fff;
+  border-top: 1px dashed #eee;
+}
+
+.title {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+}
+
+.btnGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.shareBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.shareBtn:hover {
+  opacity: 0.9;
+}
+
+.kakaoBtn {
+  background-color: #FEE500;
+  color: #000000;
+}
+
+.linkBtn {
+  background-color: #f5f5f5;
+  color: #333;
+}

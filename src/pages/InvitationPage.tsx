@@ -6,6 +6,7 @@ import { Location } from '@/components/Location';
 import { Account } from '@/components/Account';
 import { Guestbook } from '@/components/Guestbook';
 import { RsvpForm } from '@/components/RsvpForm';
+import { ShareSection } from '@/components/ShareSection';
 import { useInvitationData } from '@/hooks/useInvitationData';
 import classes from './InvitationPage.module.css';
 
@@ -39,6 +40,7 @@ export default function InvitationPage() {
       <Location data={data} />
       <Account data={data} />
       <RsvpForm invitationSlug={data.slug} />
+      <ShareSection data={data} />
       <Guestbook data={data} />
     </div>
   );

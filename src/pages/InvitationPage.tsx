@@ -5,8 +5,9 @@ import { Gallery } from '@/components/Gallery';
 import { Location } from '@/components/Location';
 import { Account } from '@/components/Account';
 import { Guestbook } from '@/components/Guestbook';
+import { RsvpForm } from '@/components/RsvpForm';
 import { useInvitationData } from '@/hooks/useInvitationData';
-import classes from './InvitationPage.module.css'; // We will create this for loading/error styling
+import classes from './InvitationPage.module.css';
 
 export default function InvitationPage() {
   const { invitationSlug } = useParams<{ invitationSlug: string }>();
@@ -37,6 +38,7 @@ export default function InvitationPage() {
       <Gallery data={data} />
       <Location data={data} />
       <Account data={data} />
+      <RsvpForm invitationSlug={data.slug} />
       <Guestbook data={data} />
     </div>
   );

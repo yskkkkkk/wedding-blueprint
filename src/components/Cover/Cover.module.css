@@ -29,9 +29,11 @@
   align-items: center;
   text-align: center;
   padding: 0 2rem;
+  width: 100%;
 }
 
 .title {
+  font-family: var(--font-family-serif);
   font-size: 1.5rem;
   font-weight: 400;
   color: var(--color-text-primary, #333);
@@ -52,9 +54,11 @@
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 2rem;
 }
 
 .date {
+  font-family: var(--font-family-serif);
   font-size: 0.95rem;
   color: var(--color-text-secondary, #666);
   letter-spacing: 0.05em;
@@ -63,4 +67,20 @@
 .location {
   font-size: 1rem;
   color: var(--color-text-primary, #333);
+}
+
+.dDayContainer {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(212, 163, 115, 0.1);
+  border-radius: 20px;
+  border: 1px solid rgba(212, 163, 115, 0.2);
+}
+
+.dDayText {
+  font-family: var(--font-family-serif);
+  font-size: 0.95rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  letter-spacing: 0.05em;
 }

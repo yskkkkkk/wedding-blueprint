@@ -22,6 +22,23 @@ export default function Cover({ data }: CoverProps) {
     hour12: true,
   });
 
+  // Calculate D-Day
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const targetDate = new Date(dateObj);
+  targetDate.setHours(0, 0, 0, 0);
+  const diffTime = targetDate.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  let dDayText = '';
+  if (diffDays > 0) {
+    dDayText = `${data.groom.name} ♥ ${data.bride.name}의 결혼식이 ${diffDays}일 남았습니다.`;
+  } else if (diffDays === 0) {
+    dDayText = `오늘, ${data.groom.name} ♥ ${data.bride.name} 결혼합니다.`;
+  } else {
+    dDayText = `${data.groom.name} ♥ ${data.bride.name} 부부가 된 지 ${Math.abs(diffDays)}일 째입니다.`;
+  }
+
   return (
     <section className={classes.coverSection}>
       <FadeIn yOffset={20} duration={1}>
@@ -45,6 +62,12 @@ export default function Cover({ data }: CoverProps) {
               {formattedDate} {dayName} {timeString}
             </p>
             <p className={classes.location}>{data.location.name}</p>
+          </div>
+        </FadeIn>
+
+        <FadeIn delay={0.9}>
+          <div className={classes.dDayContainer}>
+            <p className={classes.dDayText}>{dDayText}</p>
           </div>
         </FadeIn>
       </div>

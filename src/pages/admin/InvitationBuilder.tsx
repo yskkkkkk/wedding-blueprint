@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/services/supabase';
+import { FormInput } from '@/components/admin';
 import classes from './Admin.module.css';
 
 export default function InvitationBuilder() {
@@ -9,37 +10,48 @@ export default function InvitationBuilder() {
   const editSlug = searchParams.get('edit');
   const [authChecked, setAuthChecked] = useState(false);
 
-  // Form State
-  const [slug, setSlug] = useState('');
-  const [weddingDate, setWeddingDate] = useState('');
-  const [groomName, setGroomName] = useState('');
-  const [groomRelation, setGroomRelation] = useState('');
-  const [brideName, setBrideName] = useState('');
-  const [brideRelation, setBrideRelation] = useState('');
-  
-  const [parents, setParents] = useState({
-    groomFather: '', groomMother: '', brideFather: '', brideMother: ''
+  // Single Form State
+  const [formData, setFormData] = useState({
+    slug: '',
+    weddingDate: '',
+    groomName: '',
+    groomRelation: '',
+    brideName: '',
+    brideRelation: '',
+    groomFather: '',
+    groomMother: '',
+    brideFather: '',
+    brideMother: '',
+    weddingHall: '',
+    address: '',
+    coverImage: '',
+    greetingTitle: '',
+    greetingContent: '',
+    galleryUrls: '',
+    groomBankName: '',
+    groomAccountNumber: '',
+    groomHolder: '',
+    groomTossLink: '',
+    groomKakaopayLink: '',
+    brideBankName: '',
+    brideAccountNumber: '',
+    brideHolder: '',
+    brideTossLink: '',
+    brideKakaopayLink: '',
   });
 
-  const [weddingHall, setWeddingHall] = useState('');
-  const [address, setAddress] = useState('');
-  const [coverImage, setCoverImage] = useState('');
-  
-  const [greeting, setGreeting] = useState({ title: '', content: '' });
-  
-  const [groomAccount, setGroomAccount] = useState({
-    bankName: '', accountNumber: '', holder: '', tossLink: '', kakaopayLink: ''
-  });
-  
-  const [brideAccount, setBrideAccount] = useState({
-    bankName: '', accountNumber: '', holder: '', tossLink: '', kakaopayLink: ''
-  });
-
-  const [galleryUrls, setGalleryUrls] = useState('');
-
-  // Submit State
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  // Handle generic input change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    // Handle the slug lowercasing specifically if needed, but we can just do it universally or conditionally
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: name === 'slug' ? value.toLowerCase() : value 
+    }));
+  };
 
   useEffect(() => {
     async function checkAuth() {
@@ -64,58 +76,39 @@ export default function InvitationBuilder() {
         .single();
         
       if (data) {
-        setSlug(data.slug);
-        
         // Format datetime for datetime-local input (YYYY-MM-DDThh:mm)
         const dateObj = new Date(data.wedding_date);
         const tzOffset = dateObj.getTimezoneOffset() * 60000;
         const localISOTime = (new Date(dateObj.getTime() - tzOffset)).toISOString().slice(0, 16);
-        setWeddingDate(localISOTime);
         
-        setGroomName(data.groom?.name || '');
-        setGroomRelation(data.groom?.relation || '');
-        setBrideName(data.bride?.name || '');
-        setBrideRelation(data.bride?.relation || '');
-        
-        setParents({
+        setFormData({
+          slug: data.slug || '',
+          weddingDate: localISOTime,
+          groomName: data.groom?.name || '',
+          groomRelation: data.groom?.relation || '',
+          brideName: data.bride?.name || '',
+          brideRelation: data.bride?.relation || '',
           groomFather: data.groom_parents?.father?.name || '',
           groomMother: data.groom_parents?.mother?.name || '',
           brideFather: data.bride_parents?.father?.name || '',
-          brideMother: data.bride_parents?.mother?.name || ''
+          brideMother: data.bride_parents?.mother?.name || '',
+          weddingHall: data.location?.name || '',
+          address: data.location?.address || '',
+          coverImage: data.cover_image || '',
+          greetingTitle: data.greeting?.title || '',
+          greetingContent: data.greeting?.content || '',
+          galleryUrls: data.gallery_images ? data.gallery_images.join(', ') : '',
+          groomBankName: data.groom?.bank?.name || '',
+          groomAccountNumber: data.groom?.bank?.accountNumber || '',
+          groomHolder: data.groom?.bank?.holder || '',
+          groomTossLink: data.groom?.tossLink || '',
+          groomKakaopayLink: data.groom?.kakaopayLink || '',
+          brideBankName: data.bride?.bank?.name || '',
+          brideAccountNumber: data.bride?.bank?.accountNumber || '',
+          brideHolder: data.bride?.bank?.holder || '',
+          brideTossLink: data.bride?.tossLink || '',
+          brideKakaopayLink: data.bride?.kakaopayLink || '',
         });
-        
-        setWeddingHall(data.location?.name || '');
-        setAddress(data.location?.address || '');
-        setCoverImage(data.cover_image || '');
-        
-        setGreeting({
-          title: data.greeting?.title || '',
-          content: data.greeting?.content || ''
-        });
-        
-        if (data.groom?.bank) {
-          setGroomAccount({
-            bankName: data.groom.bank.name || '',
-            accountNumber: data.groom.bank.accountNumber || '',
-            holder: data.groom.bank.holder || '',
-            tossLink: data.groom.tossLink || '',
-            kakaopayLink: data.groom.kakaopayLink || ''
-          });
-        }
-        
-        if (data.bride?.bank) {
-          setBrideAccount({
-            bankName: data.bride.bank.name || '',
-            accountNumber: data.bride.bank.accountNumber || '',
-            holder: data.bride.bank.holder || '',
-            tossLink: data.bride.tossLink || '',
-            kakaopayLink: data.bride.kakaopayLink || ''
-          });
-        }
-        
-        if (data.gallery_images) {
-          setGalleryUrls(data.gallery_images.join(', '));
-        }
       } else if (error) {
         console.error('Error fetching edit data:', error);
       }
@@ -127,7 +120,14 @@ export default function InvitationBuilder() {
     e.preventDefault();
     setError('');
 
-    // Validation
+    const {
+      slug, weddingDate, groomName, brideName, weddingHall, address, coverImage,
+      groomRelation, brideRelation, groomFather, groomMother, brideFather, brideMother,
+      greetingTitle, greetingContent, galleryUrls,
+      groomBankName, groomAccountNumber, groomHolder, groomTossLink, groomKakaopayLink,
+      brideBankName, brideAccountNumber, brideHolder, brideTossLink, brideKakaopayLink
+    } = formData;
+
     const slugRegex = /^[a-z0-9-]+$/;
     if (!slugRegex.test(slug)) {
       setError('고유 주소(Slug)는 영문 소문자, 숫자, 하이픈(-)만 사용할 수 있습니다.');
@@ -142,10 +142,7 @@ export default function InvitationBuilder() {
     setIsSubmitting(true);
 
     try {
-      // Data shaping for DB
-      const galleryArray = galleryUrls.split(',')
-        .map(url => url.trim())
-        .filter(url => url.length > 0);
+      const galleryArray = galleryUrls.split(',').map(url => url.trim()).filter(url => url.length > 0);
 
       const newInvitation = {
         slug,
@@ -153,64 +150,33 @@ export default function InvitationBuilder() {
         groom: { 
           name: groomName, 
           relation: groomRelation,
-          bank: groomAccount.bankName ? {
-            name: groomAccount.bankName,
-            accountNumber: groomAccount.accountNumber,
-            holder: groomAccount.holder
-          } : undefined,
-          tossLink: groomAccount.tossLink || undefined,
-          kakaopayLink: groomAccount.kakaopayLink || undefined,
+          bank: groomBankName ? { name: groomBankName, accountNumber: groomAccountNumber, holder: groomHolder } : undefined,
+          tossLink: groomTossLink || undefined,
+          kakaopayLink: groomKakaopayLink || undefined,
         },
         bride: { 
           name: brideName, 
           relation: brideRelation,
-          bank: brideAccount.bankName ? {
-            name: brideAccount.bankName,
-            accountNumber: brideAccount.accountNumber,
-            holder: brideAccount.holder
-          } : undefined,
-          tossLink: brideAccount.tossLink || undefined,
-          kakaopayLink: brideAccount.kakaopayLink || undefined,
+          bank: brideBankName ? { name: brideBankName, accountNumber: brideAccountNumber, holder: brideHolder } : undefined,
+          tossLink: brideTossLink || undefined,
+          kakaopayLink: brideKakaopayLink || undefined,
         },
-        groom_parents: { 
-          father: { name: parents.groomFather || '' }, 
-          mother: { name: parents.groomMother || '' } 
-        },
-        bride_parents: { 
-          father: { name: parents.brideFather || '' }, 
-          mother: { name: parents.brideMother || '' } 
-        },
-        location: { 
-          name: weddingHall, 
-          address: address, 
-          latitude: 37.512, 
-          longitude: 127.034 
-        },
-        greeting: { 
-          title: greeting.title || '초대합니다', 
-          content: greeting.content || '두 사람이 만나 하나가 되는 날...' 
-        },
+        groom_parents: { father: { name: groomFather }, mother: { name: groomMother } },
+        bride_parents: { father: { name: brideFather }, mother: { name: brideMother } },
+        location: { name: weddingHall, address: address, latitude: 37.512, longitude: 127.034 },
+        greeting: { title: greetingTitle || '초대합니다', content: greetingContent || '두 사람이 만나 하나가 되는 날...' },
         cover_image: coverImage,
         gallery_images: galleryArray
       };
 
       if (editSlug) {
-        const { error: updateError } = await supabase
-          .from('invitations')
-          .update(newInvitation)
-          .eq('slug', editSlug);
-
+        const { error: updateError } = await supabase.from('invitations').update(newInvitation).eq('slug', editSlug);
         if (updateError) throw updateError;
         alert('성공적으로 청첩장이 수정되었습니다!');
       } else {
-        const { error: insertError } = await supabase
-          .from('invitations')
-          .insert([newInvitation]);
-
+        const { error: insertError } = await supabase.from('invitations').insert([newInvitation]);
         if (insertError) {
-          if (insertError.code === '23505') { // Unique violation
-            throw new Error('이미 사용 중인 주소(Slug)입니다. 다른 주소를 입력해주세요.');
-          }
+          if (insertError.code === '23505') throw new Error('이미 사용 중인 주소(Slug)입니다. 다른 주소를 입력해주세요.');
           throw insertError;
         }
         alert('성공적으로 청첩장이 생성되었습니다!');
@@ -242,86 +208,35 @@ export default function InvitationBuilder() {
           
           <section className={classes.builderSection}>
             <h3 className={classes.sectionTitle}>1. 기본 정보</h3>
-            <div className={classes.inputGroup}>
-              <label>고유 주소 (Slug) *</label>
-              <input 
-                type="text" 
-                className={classes.input} 
-                placeholder="예: minsu-wedding" 
-                value={slug}
-                onChange={e => setSlug(e.target.value.toLowerCase())}
-                required
-                disabled={!!editSlug}
-                style={{ backgroundColor: editSlug ? '#f0f0f0' : 'white' }}
-              />
-            </div>
-            <div className={classes.inputGroup}>
-              <label>예식 일시 *</label>
-              <input 
-                type="datetime-local" 
-                className={classes.input} 
-                value={weddingDate}
-                onChange={e => setWeddingDate(e.target.value)}
-                required
-              />
-            </div>
+            <FormInput label="고유 주소 (Slug) *" name="slug" placeholder="예: minsu-wedding" value={formData.slug} onChange={handleChange} required disabled={!!editSlug} style={{ backgroundColor: editSlug ? '#f0f0f0' : 'white' }} />
+            <FormInput label="예식 일시 *" name="weddingDate" type="datetime-local" value={formData.weddingDate} onChange={handleChange} required />
           </section>
 
           <section className={classes.builderSection}>
             <h3 className={classes.sectionTitle}>2. 신랑 / 신부 및 혼주 정보</h3>
             <div className={classes.formRow}>
-              <div className={classes.inputGroup}>
-                <label>신랑 이름 *</label>
-                <input type="text" className={classes.input} value={groomName} onChange={e => setGroomName(e.target.value)} required />
-              </div>
-              <div className={classes.inputGroup}>
-                <label>관계</label>
-                <input type="text" className={classes.input} placeholder="예: 장남" value={groomRelation} onChange={e => setGroomRelation(e.target.value)} />
-              </div>
+              <FormInput label="신랑 이름 *" name="groomName" value={formData.groomName} onChange={handleChange} required />
+              <FormInput label="관계" name="groomRelation" placeholder="예: 장남" value={formData.groomRelation} onChange={handleChange} />
             </div>
             <div className={classes.formRow}>
-              <div className={classes.inputGroup}>
-                <label>신랑 아버지</label>
-                <input type="text" className={classes.input} value={parents.groomFather} onChange={e => setParents({...parents, groomFather: e.target.value})} />
-              </div>
-              <div className={classes.inputGroup}>
-                <label>신랑 어머니</label>
-                <input type="text" className={classes.input} value={parents.groomMother} onChange={e => setParents({...parents, groomMother: e.target.value})} />
-              </div>
+              <FormInput label="신랑 아버지" name="groomFather" value={formData.groomFather} onChange={handleChange} />
+              <FormInput label="신랑 어머니" name="groomMother" value={formData.groomMother} onChange={handleChange} />
             </div>
             <hr style={{ margin: '1rem 0', border: 'none', borderTop: '1px dashed #ccc' }} />
             <div className={classes.formRow}>
-              <div className={classes.inputGroup}>
-                <label>신부 이름 *</label>
-                <input type="text" className={classes.input} value={brideName} onChange={e => setBrideName(e.target.value)} required />
-              </div>
-              <div className={classes.inputGroup}>
-                <label>관계</label>
-                <input type="text" className={classes.input} placeholder="예: 차녀" value={brideRelation} onChange={e => setBrideRelation(e.target.value)} />
-              </div>
+              <FormInput label="신부 이름 *" name="brideName" value={formData.brideName} onChange={handleChange} required />
+              <FormInput label="관계" name="brideRelation" placeholder="예: 차녀" value={formData.brideRelation} onChange={handleChange} />
             </div>
             <div className={classes.formRow}>
-              <div className={classes.inputGroup}>
-                <label>신부 아버지</label>
-                <input type="text" className={classes.input} value={parents.brideFather} onChange={e => setParents({...parents, brideFather: e.target.value})} />
-              </div>
-              <div className={classes.inputGroup}>
-                <label>신부 어머니</label>
-                <input type="text" className={classes.input} value={parents.brideMother} onChange={e => setParents({...parents, brideMother: e.target.value})} />
-              </div>
+              <FormInput label="신부 아버지" name="brideFather" value={formData.brideFather} onChange={handleChange} />
+              <FormInput label="신부 어머니" name="brideMother" value={formData.brideMother} onChange={handleChange} />
             </div>
           </section>
 
           <section className={classes.builderSection}>
             <h3 className={classes.sectionTitle}>3. 인사말 (Greeting)</h3>
-            <div className={classes.inputGroup}>
-              <label>제목</label>
-              <input type="text" className={classes.input} placeholder="초대합니다" value={greeting.title} onChange={e => setGreeting({...greeting, title: e.target.value})} />
-            </div>
-            <div className={classes.inputGroup}>
-              <label>내용</label>
-              <textarea className={classes.input} style={{ minHeight: '100px' }} placeholder="인사말을 적어주세요." value={greeting.content} onChange={e => setGreeting({...greeting, content: e.target.value})} />
-            </div>
+            <FormInput label="제목" name="greetingTitle" placeholder="초대합니다" value={formData.greetingTitle} onChange={handleChange} />
+            <FormInput isTextarea label="내용" name="greetingContent" placeholder="인사말을 적어주세요." value={formData.greetingContent} onChange={handleChange} />
           </section>
 
           <section className={classes.builderSection}>
@@ -331,26 +246,11 @@ export default function InvitationBuilder() {
                 신랑측 계좌번호 입력하기
               </summary>
               <div style={{ padding: '1rem', border: '1px solid #eee', marginTop: '0.5rem' }}>
-                <div className={classes.inputGroup}>
-                  <label>은행명</label>
-                  <input type="text" className={classes.input} value={groomAccount.bankName} onChange={e => setGroomAccount({...groomAccount, bankName: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>계좌번호</label>
-                  <input type="text" className={classes.input} value={groomAccount.accountNumber} onChange={e => setGroomAccount({...groomAccount, accountNumber: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>예금주</label>
-                  <input type="text" className={classes.input} value={groomAccount.holder} onChange={e => setGroomAccount({...groomAccount, holder: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>토스 송금 링크 (선택)</label>
-                  <input type="url" className={classes.input} value={groomAccount.tossLink} onChange={e => setGroomAccount({...groomAccount, tossLink: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>카카오페이 송금 링크 (선택)</label>
-                  <input type="url" className={classes.input} value={groomAccount.kakaopayLink} onChange={e => setGroomAccount({...groomAccount, kakaopayLink: e.target.value})} />
-                </div>
+                <FormInput label="은행명" name="groomBankName" value={formData.groomBankName} onChange={handleChange} />
+                <FormInput label="계좌번호" name="groomAccountNumber" value={formData.groomAccountNumber} onChange={handleChange} />
+                <FormInput label="예금주" name="groomHolder" value={formData.groomHolder} onChange={handleChange} />
+                <FormInput label="토스 송금 링크 (선택)" name="groomTossLink" type="url" value={formData.groomTossLink} onChange={handleChange} />
+                <FormInput label="카카오페이 송금 링크 (선택)" name="groomKakaopayLink" type="url" value={formData.groomKakaopayLink} onChange={handleChange} />
               </div>
             </details>
 
@@ -359,52 +259,25 @@ export default function InvitationBuilder() {
                 신부측 계좌번호 입력하기
               </summary>
               <div style={{ padding: '1rem', border: '1px solid #eee', marginTop: '0.5rem' }}>
-                <div className={classes.inputGroup}>
-                  <label>은행명</label>
-                  <input type="text" className={classes.input} value={brideAccount.bankName} onChange={e => setBrideAccount({...brideAccount, bankName: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>계좌번호</label>
-                  <input type="text" className={classes.input} value={brideAccount.accountNumber} onChange={e => setBrideAccount({...brideAccount, accountNumber: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>예금주</label>
-                  <input type="text" className={classes.input} value={brideAccount.holder} onChange={e => setBrideAccount({...brideAccount, holder: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>토스 송금 링크 (선택)</label>
-                  <input type="url" className={classes.input} value={brideAccount.tossLink} onChange={e => setBrideAccount({...brideAccount, tossLink: e.target.value})} />
-                </div>
-                <div className={classes.inputGroup}>
-                  <label>카카오페이 송금 링크 (선택)</label>
-                  <input type="url" className={classes.input} value={brideAccount.kakaopayLink} onChange={e => setBrideAccount({...brideAccount, kakaopayLink: e.target.value})} />
-                </div>
+                <FormInput label="은행명" name="brideBankName" value={formData.brideBankName} onChange={handleChange} />
+                <FormInput label="계좌번호" name="brideAccountNumber" value={formData.brideAccountNumber} onChange={handleChange} />
+                <FormInput label="예금주" name="brideHolder" value={formData.brideHolder} onChange={handleChange} />
+                <FormInput label="토스 송금 링크 (선택)" name="brideTossLink" type="url" value={formData.brideTossLink} onChange={handleChange} />
+                <FormInput label="카카오페이 송금 링크 (선택)" name="brideKakaopayLink" type="url" value={formData.brideKakaopayLink} onChange={handleChange} />
               </div>
             </details>
           </section>
 
           <section className={classes.builderSection}>
             <h3 className={classes.sectionTitle}>5. 예식장 정보</h3>
-            <div className={classes.inputGroup}>
-              <label>웨딩홀 이름 *</label>
-              <input type="text" className={classes.input} placeholder="예: 더그레이스켈리 강남 1층 아모르홀" value={weddingHall} onChange={e => setWeddingHall(e.target.value)} required />
-            </div>
-            <div className={classes.inputGroup}>
-              <label>상세 주소 *</label>
-              <input type="text" className={classes.input} placeholder="서울 강남구 언주로 123" value={address} onChange={e => setAddress(e.target.value)} required />
-            </div>
+            <FormInput label="웨딩홀 이름 *" name="weddingHall" placeholder="예: 더그레이스켈리 강남 1층 아모르홀" value={formData.weddingHall} onChange={handleChange} required />
+            <FormInput label="상세 주소 *" name="address" placeholder="서울 강남구 언주로 123" value={formData.address} onChange={handleChange} required />
           </section>
 
           <section className={classes.builderSection}>
             <h3 className={classes.sectionTitle}>6. 사진 및 갤러리</h3>
-            <div className={classes.inputGroup}>
-              <label>커버 이미지 URL *</label>
-              <input type="url" className={classes.input} placeholder="https://images.unsplash.com/..." value={coverImage} onChange={e => setCoverImage(e.target.value)} required />
-            </div>
-            <div className={classes.inputGroup}>
-              <label>갤러리 이미지 (URL을 쉼표로 구분하여 입력)</label>
-              <textarea className={classes.input} style={{ minHeight: '80px' }} placeholder="https://image1.jpg, https://image2.jpg" value={galleryUrls} onChange={e => setGalleryUrls(e.target.value)} />
-            </div>
+            <FormInput label="커버 이미지 URL *" name="coverImage" type="url" placeholder="https://images.unsplash.com/..." value={formData.coverImage} onChange={handleChange} required />
+            <FormInput isTextarea label="갤러리 이미지 (URL을 쉼표로 구분하여 입력)" name="galleryUrls" placeholder="https://image1.jpg, https://image2.jpg" value={formData.galleryUrls} onChange={handleChange} />
           </section>
 
           {error && <p className={classes.error} style={{ textAlign: 'center' }}>{error}</p>}

@@ -1,29 +1,86 @@
 .section {
   width: 100%;
-  padding: 4rem 2rem;
-  background-color: var(--color-background, #fdfcfb);
+  padding: 5rem 2rem;
+  background-color: var(--color-background);
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.container {
-  width: 100%;
-  max-width: 400px;
-  text-align: center;
-  padding: 2rem;
-  border: 1px dashed var(--color-primary, #d4a373);
-  border-radius: 8px;
-}
-
 .title {
+  font-family: var(--font-family-serif);
   font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--color-text-primary, #333);
-  margin-bottom: 1rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  margin-bottom: 3rem;
+  letter-spacing: 2px;
+  text-align: center;
 }
 
-.placeholder {
+.content {
+  font-family: var(--font-family-serif);
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  line-height: 2;
+  text-align: center;
+  margin-bottom: 4rem;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
+.familyContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 360px;
+}
+
+.familyRow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-family-serif);
+}
+
+.parentsWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.parentName {
+  /* additional specific styling if needed */
+}
+
+.dot {
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.relationWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.relationText {
+  color: var(--color-text-secondary);
   font-size: 0.95rem;
-  color: var(--color-text-secondary, #666);
+}
+
+.relationTitle {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+}
+
+.name {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-left: 0.2rem;
 }

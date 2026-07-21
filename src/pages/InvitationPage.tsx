@@ -10,6 +10,8 @@ import { ShareSection } from '@/components/ShareSection';
 import { useInvitationData } from '@/hooks/useInvitationData';
 import classes from './InvitationPage.module.css';
 
+import { FloatingTopButton } from '@/components/FloatingTopButton';
+
 export default function InvitationPage() {
   const { invitationSlug } = useParams<{ invitationSlug: string }>();
   const { data, loading, error } = useInvitationData(invitationSlug);
@@ -42,6 +44,9 @@ export default function InvitationPage() {
       <RsvpForm invitationSlug={data.slug} />
       <ShareSection data={data} />
       <Guestbook data={data} />
+      
+      {/* Floating Action Button */}
+      <FloatingTopButton />
     </div>
   );
 }

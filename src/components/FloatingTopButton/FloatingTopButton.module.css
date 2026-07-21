@@ -1,0 +1,32 @@
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  background-color: var(--color-primary, #d4a373);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 99; /* Below modal which is 1000 */
+  transition: background-color 0.3s ease;
+}
+
+.fab:hover {
+  background-color: #c09163; /* slightly darker primary color */
+}
+
+/* For mobile devices, adjust position slightly if needed */
+@media (max-width: 480px) {
+  .fab {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3rem;
+    height: 3rem;
+  }
+}

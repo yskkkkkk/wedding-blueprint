@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Cover } from '@/components/Cover';
 import { Greeting } from '@/components/Greeting';
+import Calendar from '@/components/Calendar';
 import { Gallery } from '@/components/Gallery';
 import { Location } from '@/components/Location';
 import { Account } from '@/components/Account';
@@ -38,6 +39,7 @@ export default function InvitationPage() {
     <div>
       <Cover data={data} />
       <Greeting data={data} />
+      <Calendar weddingDate={data.weddingDate} />
       <Gallery data={data} />
       <Location data={data} />
       <Account data={data} />

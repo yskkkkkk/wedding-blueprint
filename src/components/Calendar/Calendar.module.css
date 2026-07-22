@@ -1,0 +1,121 @@
+.section {
+  width: 100%;
+  padding: 3rem 2rem;
+  background-color: var(--color-background, #fdfcfb);
+  display: flex;
+  justify-content: center;
+}
+
+.calendarContainer {
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(212, 163, 115, 0.1);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.monthTitle {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #333);
+  letter-spacing: 0.05em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem 0;
+  text-align: center;
+}
+
+.dayHeader {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #666);
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+/* Make Sunday red */
+.dayHeader:first-child {
+  color: #e57373;
+}
+
+.cell {
+  position: relative;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dayText {
+  font-family: var(--font-family-serif);
+  font-size: 1rem;
+  color: var(--color-text-primary, #333);
+  position: relative;
+  z-index: 2;
+}
+
+/* Make Sunday numbers red */
+.cell:nth-child(7n + 1) .dayText {
+  color: #e57373;
+}
+
+.weddingDayCell {
+  position: relative;
+}
+
+.highlightWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.heartIcon {
+  position: absolute;
+  top: -6px;
+  font-size: 2rem;
+  color: rgba(212, 163, 115, 0.2);
+  z-index: 1;
+  animation: pulse 2s infinite ease-in-out;
+}
+
+.weddingDayCell .dayText {
+  color: var(--color-primary, #d4a373);
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-family: var(--font-family-serif);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary, #666);
+  letter-spacing: 0.05em;
+  padding-top: 1rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+}

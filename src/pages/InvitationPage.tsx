@@ -9,6 +9,7 @@ import { Guestbook } from '@/components/Guestbook';
 import { RsvpForm } from '@/components/RsvpForm';
 import { ShareSection } from '@/components/ShareSection';
 import { useInvitationData } from '@/hooks/useInvitationData';
+import { Skeleton } from '@/components/shared/Skeleton';
 import classes from './InvitationPage.module.css';
 
 import { FloatingTopButton } from '@/components/FloatingTopButton';
@@ -18,12 +19,7 @@ export default function InvitationPage() {
   const { data, loading, error } = useInvitationData(invitationSlug);
   
   if (loading) {
-    return (
-      <div className={classes.fullScreenCenter}>
-        <div className={classes.spinner}></div>
-        <p>청첩장을 불러오는 중입니다...</p>
-      </div>
-    );
+    return <Skeleton />;
   }
 
   if (error || !data) {

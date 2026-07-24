@@ -38,7 +38,7 @@ export default function InvitationBuilder() {
     brideHolder: '',
     brideTossLink: '',
     brideKakaopayLink: '',
-    themeFont: 'Noto Sans KR',
+    themeFont: "'Pretendard Variable', Pretendard, sans-serif",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,7 +109,7 @@ export default function InvitationBuilder() {
           brideHolder: data.bride?.bank?.holder || '',
           brideTossLink: data.bride?.tossLink || '',
           brideKakaopayLink: data.bride?.kakaopayLink || '',
-          themeFont: data.theme_font || 'Noto Sans KR',
+          themeFont: data.theme_font || "'Pretendard Variable', Pretendard, sans-serif",
         });
       } else if (error) {
         console.error('Error fetching edit data:', error);
@@ -289,10 +289,15 @@ export default function InvitationBuilder() {
             <div className={classes.inputGroup}>
               <label>감성 폰트 (글꼴) 선택</label>
               <select name="themeFont" value={formData.themeFont} onChange={handleChange as any} className={classes.input}>
-                <option value="Noto Sans KR">본고딕 (기본, 깔끔한 느낌)</option>
-                <option value="Noto Serif KR">본명조 (우아하고 고급스러운 느낌)</option>
+                <option value="'Pretendard Variable', Pretendard, sans-serif">프리텐다드 (기본, 가장 세련된 고딕)</option>
+                <option value="Noto Sans KR">본고딕 (Noto Sans KR)</option>
+                <option value="Noto Serif KR">본명조 (고급스럽고 우아한 느낌)</option>
                 <option value="Gowun Dodum">고운 돋움 (단정하고 따뜻한 느낌)</option>
                 <option value="Nanum Myeongjo">나눔 명조 (클래식한 느낌)</option>
+                <option value="Nanum Gothic">나눔 고딕 (친숙하고 부드러운 고딕)</option>
+                <option value="Nanum Pen Script">나눔 펜 글씨 (감성적인 손글씨)</option>
+                <option value="Jua">배달의민족 주아 (동글동글 귀여운 느낌)</option>
+                <option value="Do Hyeon">배달의민족 도현 (단단하고 레트로한 느낌)</option>
               </select>
             </div>
           </section>

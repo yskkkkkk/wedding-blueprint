@@ -32,9 +32,9 @@ export default function InvitationPage() {
   }
 
   const fontStyle = {
-    '--font-family-primary': data.themeFont || 'Noto Sans KR',
-    '--font-family-serif': data.themeFont || 'Noto Sans KR',
-    fontFamily: data.themeFont || 'Noto Sans KR'
+    '--font-family-primary': data.themeFont || "'Pretendard Variable', Pretendard, sans-serif",
+    '--font-family-serif': data.themeFont || "'Pretendard Variable', Pretendard, sans-serif",
+    fontFamily: data.themeFont || "'Pretendard Variable', Pretendard, sans-serif"
   } as React.CSSProperties;
 
   return (

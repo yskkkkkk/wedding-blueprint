@@ -31,8 +31,14 @@ export default function InvitationPage() {
     );
   }
 
+  const fontStyle = {
+    '--font-family-primary': data.themeFont || "'Pretendard Variable', Pretendard, sans-serif",
+    '--font-family-serif': data.themeFont || "'Pretendard Variable', Pretendard, sans-serif",
+    fontFamily: data.themeFont || "'Pretendard Variable', Pretendard, sans-serif"
+  } as React.CSSProperties;
+
   return (
-    <div>
+    <div style={fontStyle}>
       <Cover data={data} />
       <Greeting data={data} />
       <Calendar weddingDate={data.weddingDate} />

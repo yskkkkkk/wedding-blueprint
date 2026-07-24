@@ -33,6 +33,7 @@ export interface InvitationData {
   };
   coverImage: string;
   galleryImages: string[];
+  themeFont?: string;
 }
 
 export interface GuestbookEntry {

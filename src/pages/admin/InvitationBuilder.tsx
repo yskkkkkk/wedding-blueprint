@@ -38,6 +38,7 @@ export default function InvitationBuilder() {
     brideHolder: '',
     brideTossLink: '',
     brideKakaopayLink: '',
+    themeFont: 'Noto Sans KR',
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -108,6 +109,7 @@ export default function InvitationBuilder() {
           brideHolder: data.bride?.bank?.holder || '',
           brideTossLink: data.bride?.tossLink || '',
           brideKakaopayLink: data.bride?.kakaopayLink || '',
+          themeFont: data.theme_font || 'Noto Sans KR',
         });
       } else if (error) {
         console.error('Error fetching edit data:', error);
@@ -125,7 +127,8 @@ export default function InvitationBuilder() {
       groomRelation, brideRelation, groomFather, groomMother, brideFather, brideMother,
       greetingTitle, greetingContent, galleryUrls,
       groomBankName, groomAccountNumber, groomHolder, groomTossLink, groomKakaopayLink,
-      brideBankName, brideAccountNumber, brideHolder, brideTossLink, brideKakaopayLink
+      brideBankName, brideAccountNumber, brideHolder, brideTossLink, brideKakaopayLink,
+      themeFont
     } = formData;
 
     const slugRegex = /^[a-z0-9-]+$/;
@@ -166,7 +169,8 @@ export default function InvitationBuilder() {
         location: { name: weddingHall, address: address, latitude: 37.512, longitude: 127.034 },
         greeting: { title: greetingTitle || '초대합니다', content: greetingContent || '두 사람이 만나 하나가 되는 날...' },
         cover_image: coverImage,
-        gallery_images: galleryArray
+        gallery_images: galleryArray,
+        theme_font: themeFont,
       };
 
       if (editSlug) {
@@ -278,6 +282,19 @@ export default function InvitationBuilder() {
             <h3 className={classes.sectionTitle}>6. 사진 및 갤러리</h3>
             <FormInput label="커버 이미지 URL *" name="coverImage" type="url" placeholder="https://images.unsplash.com/..." value={formData.coverImage} onChange={handleChange} required />
             <FormInput isTextarea label="갤러리 이미지 (URL을 쉼표로 구분하여 입력)" name="galleryUrls" placeholder="https://image1.jpg, https://image2.jpg" value={formData.galleryUrls} onChange={handleChange} />
+          </section>
+
+          <section className={classes.builderSection}>
+            <h3 className={classes.sectionTitle}>7. 프리미엄 설정</h3>
+            <div className={classes.inputGroup}>
+              <label>감성 폰트 (글꼴) 선택</label>
+              <select name="themeFont" value={formData.themeFont} onChange={handleChange as any} className={classes.input}>
+                <option value="Noto Sans KR">본고딕 (기본, 깔끔한 느낌)</option>
+                <option value="Noto Serif KR">본명조 (우아하고 고급스러운 느낌)</option>
+                <option value="Gowun Dodum">고운 돋움 (단정하고 따뜻한 느낌)</option>
+                <option value="Nanum Myeongjo">나눔 명조 (클래식한 느낌)</option>
+              </select>
+            </div>
           </section>
 
           {error && <p className={classes.error} style={{ textAlign: 'center' }}>{error}</p>}

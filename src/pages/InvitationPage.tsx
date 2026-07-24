@@ -31,8 +31,14 @@ export default function InvitationPage() {
     );
   }
 
+  const fontStyle = {
+    '--font-family-primary': data.themeFont || 'Noto Sans KR',
+    '--font-family-serif': data.themeFont || 'Noto Sans KR',
+    fontFamily: data.themeFont || 'Noto Sans KR'
+  } as React.CSSProperties;
+
   return (
-    <div>
+    <div style={fontStyle}>
       <Cover data={data} />
       <Greeting data={data} />
       <Calendar weddingDate={data.weddingDate} />

@@ -155,13 +155,18 @@ export default function InvitationBuilder() {
       const getCoordinates = (addr: string): Promise<{lat: number, lng: number}> => {
         return new Promise((resolve, reject) => {
           if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
-            console.warn('Kakao Maps API is not loaded, using fallback coordinates');
-            resolve({ lat: 37.512, lng: 127.034 });
+            reject(new Error('카카오 지도 API가 로드되지 않았습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.'));
             return;
           }
+
+          const timeout = setTimeout(() => {
+            reject(new Error('주소 검색 서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.'));
+          }, 5000);
+
           window.kakao.maps.load(() => {
             const geocoder = new window.kakao.maps.services.Geocoder();
             geocoder.addressSearch(addr, (result: any, status: any) => {
+              clearTimeout(timeout);
               if (status === window.kakao.maps.services.Status.OK) {
                 resolve({
                   lat: parseFloat(result[0].y),

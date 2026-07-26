@@ -4,6 +4,12 @@ import { supabase } from '@/services/supabase';
 import { FormInput } from '@/components/admin';
 import classes from './Admin.module.css';
 
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 export default function InvitationBuilder() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -145,6 +151,36 @@ export default function InvitationBuilder() {
     setIsSubmitting(true);
 
     try {
+      // Get Coordinates from Address using Kakao Geocoder
+      const getCoordinates = (addr: string): Promise<{lat: number, lng: number}> => {
+        return new Promise((resolve, reject) => {
+          if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
+            reject(new Error('카카오 지도 API가 로드되지 않았습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.'));
+            return;
+          }
+
+          const timeout = setTimeout(() => {
+            reject(new Error('주소 검색 서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.'));
+          }, 5000);
+
+          window.kakao.maps.load(() => {
+            const geocoder = new window.kakao.maps.services.Geocoder();
+            geocoder.addressSearch(addr, (result: any, status: any) => {
+              clearTimeout(timeout);
+              if (status === window.kakao.maps.services.Status.OK) {
+                resolve({
+                  lat: parseFloat(result[0].y),
+                  lng: parseFloat(result[0].x)
+                });
+              } else {
+                reject(new Error('주소를 지도에서 찾을 수 없습니다. 주소를 다시 확인해주세요.'));
+              }
+            });
+          });
+        });
+      };
+
+      const coords = await getCoordinates(address);
       const galleryArray = galleryUrls.split(',').map(url => url.trim()).filter(url => url.length > 0);
 
       const newInvitation = {
@@ -166,7 +202,7 @@ export default function InvitationBuilder() {
         },
         groom_parents: { father: { name: groomFather }, mother: { name: groomMother } },
         bride_parents: { father: { name: brideFather }, mother: { name: brideMother } },
-        location: { name: weddingHall, address: address, latitude: 37.512, longitude: 127.034 },
+        location: { name: weddingHall, address: address, latitude: coords.lat, longitude: coords.lng },
         greeting: { title: greetingTitle || '초대합니다', content: greetingContent || '두 사람이 만나 하나가 되는 날...' },
         cover_image: coverImage,
         gallery_images: galleryArray,

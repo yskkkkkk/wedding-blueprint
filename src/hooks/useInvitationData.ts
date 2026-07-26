@@ -38,6 +38,7 @@ export function useInvitationData(slug: string | undefined) {
             greeting: dbData.greeting,
             coverImage: dbData.cover_image,
             galleryImages: dbData.gallery_images,
+            themeFont: dbData.theme_font,
           };
           setData(mappedData);
         }

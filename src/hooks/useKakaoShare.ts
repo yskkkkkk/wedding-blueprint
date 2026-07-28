@@ -10,15 +10,28 @@ declare global {
 
 export function useKakaoShare() {
   useEffect(() => {
-    // Initialize Kakao SDK if it exists and hasn't been initialized yet
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(import.meta.env.VITE_KAKAO_MAP_KEY);
+    try {
+      if (window.Kakao && !window.Kakao.isInitialized()) {
+        const key = import.meta.env.VITE_KAKAO_MAP_KEY;
+        if (key) {
+          window.Kakao.init(key);
+        } else {
+          console.warn('VITE_KAKAO_MAP_KEY is missing. Kakao Share will not work.');
+        }
+      }
+    } catch (e) {
+      console.error('Failed to initialize Kakao SDK', e);
     }
   }, []);
 
   const shareInvitation = (data: InvitationData) => {
     if (!window.Kakao) {
-      alert('카카오 공유 기능을 불러오는 중입니다. 잠시 후 다시 시도해주세요.');
+      alert('카카오 공유 기능을 불러올 수 없습니다. 광고 차단 앱을 끄거나 잠시 후 시도해주세요.');
+      return;
+    }
+    
+    if (!window.Kakao.isInitialized()) {
+      alert('카카오 API 키가 설정되지 않아 공유 기능을 사용할 수 없습니다. (.env 설정 확인)');
       return;
     }
 

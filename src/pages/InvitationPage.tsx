@@ -24,9 +24,17 @@ export default function InvitationPage() {
 
   if (error || !data) {
     return (
-      <div className={classes.fullScreenCenter}>
-        <h2>존재하지 않는 청첩장입니다.</h2>
-        <p>URL 주소를 다시 한 번 확인해 주세요.</p>
+      <div className={classes.errorContainer}>
+        <div className={classes.errorIcon}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+          </svg>
+        </div>
+        <h2 className={classes.errorTitle}>청첩장을 찾을 수 없습니다</h2>
+        <p className={classes.errorDesc}>
+          입력하신 주소가 올바르지 않거나<br/>
+          삭제된 청첩장일 수 있습니다.
+        </p>
       </div>
     );
   }

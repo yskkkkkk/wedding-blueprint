@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/services/supabase';
+import { db } from '@/services/db';
 import type { GuestbookEntry } from '@/types';
 
 export function useGuestbook(invitationSlug: string) {
@@ -10,7 +10,7 @@ export function useGuestbook(invitationSlug: string) {
   const fetchEntries = useCallback(async () => {
     try {
       setLoading(true);
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await db
         .from('guestbook')
         .select('id, invitation_slug, name, content, created_at')
         .eq('invitation_slug', invitationSlug)
@@ -33,7 +33,7 @@ export function useGuestbook(invitationSlug: string) {
 
   const addEntry = async (entry: Omit<GuestbookEntry, 'id' | 'created_at'>) => {
     try {
-      const { error: insertError } = await supabase
+      const { error: insertError } = await db
         .from('guestbook')
         .insert([entry]);
       
@@ -51,7 +51,7 @@ export function useGuestbook(invitationSlug: string) {
     try {
       // Supabase RLS is currently "true", so anyone can delete. 
       // But we must check the password first.
-      const { data, error: fetchError } = await supabase
+      const { data, error: fetchError } = await db
         .from('guestbook')
         .select('password')
         .eq('id', id)
@@ -63,7 +63,7 @@ export function useGuestbook(invitationSlug: string) {
         throw new Error('비밀번호가 일치하지 않습니다.');
       }
 
-      const { error: deleteError } = await supabase
+      const { error: deleteError } = await db
         .from('guestbook')
         .delete()
         .eq('id', id);

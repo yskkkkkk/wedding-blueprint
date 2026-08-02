@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { supabase } from '@/services/supabase';
+import { db } from '@/services/db';
 
 export interface RsvpData {
   invitation_slug: string;
@@ -22,7 +22,7 @@ export function useRsvp(invitationSlug: string) {
     setSuccess(false);
 
     try {
-      const { error: insertError } = await supabase
+      const { error: insertError } = await db
         .from('rsvp')
         .insert([{ ...data, invitation_slug: invitationSlug }]);
 

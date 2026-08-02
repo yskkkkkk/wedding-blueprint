@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { supabase } from '@/services/supabase';
+import { db } from '@/services/db';
 import type { InvitationData } from '@/types';
 
 // 조회 실패의 원인을 구분한다.
@@ -30,7 +30,7 @@ export function useInvitationData(slug: string | undefined) {
       }
 
       try {
-        const { data: dbData, error: fetchError } = await supabase
+        const { data: dbData, error: fetchError } = await db
           .from('invitations')
           .select('*')
           .eq('slug', slug)

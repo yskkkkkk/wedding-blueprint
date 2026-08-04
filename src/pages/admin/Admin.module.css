@@ -23,13 +23,13 @@
 .title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: var(--color-text-primary);
   margin-bottom: 0.5rem;
 }
 
 .subtitle {
   font-size: 0.95rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin-bottom: 2rem;
 }
 
@@ -98,7 +98,7 @@
 .dashboardHeader h2 {
   margin: 0;
   font-size: 1.25rem;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .logoutBtn {
@@ -173,13 +173,13 @@
 .cardContent h3 {
   margin: 0 0 0.5rem 0;
   font-size: 1.1rem;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .cardContent p {
   margin: 0 0 0.25rem 0;
   font-size: 0.85rem;
-  color: #666;
+  color: var(--color-text-secondary);
 }
 
 .cardActions {
@@ -277,7 +277,7 @@
 
 .backBtn {
   text-decoration: none;
-  color: #666;
+  color: var(--color-text-secondary);
   font-weight: 500;
   font-size: 0.9rem;
   padding: 0.5rem 1rem;
@@ -333,7 +333,7 @@
 
 .statLabel {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
@@ -364,7 +364,7 @@
 }
 
 .activeTab {
-  color: #333;
+  color: var(--color-text-primary);
   border-bottom: 3px solid #d4a373;
 }
 
@@ -411,4 +411,27 @@
   border-radius: 12px;
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+/* 인라인 style 속성으로 흩어져 있던 규칙들을 모았다. */
+.headerTitleGroup {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.emptyCell {
+  text-align: center;
+}
+
+/* 방명록/참석 메시지는 길어질 수 있어 한 줄로 줄여 표시한다. */
+.messageCell {
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.nameCell {
+  font-weight: 500;
 }

@@ -46,7 +46,7 @@
 
 .divider {
   font-size: 1.2rem;
-  color: var(--color-primary, #d4a373);
+  color: var(--color-primary);
   margin: 0 0.5rem;
 }
 

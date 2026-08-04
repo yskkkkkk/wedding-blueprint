@@ -1,66 +1,39 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
+import { loadKakaoShare } from '@/services/kakaoSdk';
 import type { InvitationData } from '@/types';
 
-// Declare global Kakao object for TypeScript
-declare global {
-  interface Window {
-    Kakao: any;
-  }
-}
-
 export function useKakaoShare() {
-  useEffect(() => {
+  const [sharing, setSharing] = useState(false);
+
+  // 공유 SDK는 버튼을 누른 시점에 내려받는다. 첫 화면 로딩을 막지 않기 위함이다.
+  const shareInvitation = async (data: InvitationData) => {
+    setSharing(true);
     try {
-      if (window.Kakao && !window.Kakao.isInitialized()) {
-        const key = import.meta.env.VITE_KAKAO_MAP_KEY;
-        if (key) {
-          window.Kakao.init(key);
-        } else {
-          console.warn('VITE_KAKAO_MAP_KEY is missing. Kakao Share will not work.');
-        }
-      }
-    } catch (e) {
-      console.error('Failed to initialize Kakao SDK', e);
-    }
-  }, []);
+      const kakao = await loadKakaoShare();
 
-  const shareInvitation = (data: InvitationData) => {
-    if (!window.Kakao) {
-      alert('카카오 공유 기능을 불러올 수 없습니다. 광고 차단 앱을 끄거나 잠시 후 시도해주세요.');
-      return;
-    }
-    
-    if (!window.Kakao.isInitialized()) {
-      alert('카카오 API 키가 설정되지 않아 공유 기능을 사용할 수 없습니다. (.env 설정 확인)');
-      return;
-    }
-
-    const shareUrl = `${window.location.origin}/${data.slug}`;
-    const title = `${data.groom.name} ♥ ${data.bride.name} 결혼합니다`;
-    const description = data.greeting?.title || '저희 두 사람의 특별한 날에 초대합니다.';
-    
-    window.Kakao.Share.sendDefault({
-      objectType: 'feed',
-      content: {
-        title: title,
-        description: description,
-        imageUrl: data.coverImage,
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
+      const shareUrl = `${window.location.origin}/${data.slug}`;
+      kakao.Share.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: `${data.groom.name} ♥ ${data.bride.name} 결혼합니다`,
+          description: data.greeting?.title || '저희 두 사람의 특별한 날에 초대합니다.',
+          imageUrl: data.coverImage,
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
         },
-      },
-      buttons: [
-        {
-          title: '청첩장 보기',
-          link: {
-            mobileWebUrl: shareUrl,
-            webUrl: shareUrl,
+        buttons: [
+          {
+            title: '청첩장 보기',
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
           },
-        },
-      ],
-    });
+        ],
+      });
+    } catch (error) {
+      console.error('카카오 공유 기능을 사용할 수 없습니다.', error);
+      alert('카카오 공유 기능을 불러올 수 없습니다. 광고 차단 앱을 끄거나 잠시 후 다시 시도해주세요.');
+    } finally {
+      setSharing(false);
+    }
   };
 
-  return { shareInvitation };
+  return { shareInvitation, sharing };
 }

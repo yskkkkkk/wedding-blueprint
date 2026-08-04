@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/services/supabase';
+import { loadKakaoMaps } from '@/services/kakaoSdk';
 import { FormInput } from '@/components/admin';
 import classes from './Admin.module.css';
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
 
 export default function InvitationBuilder() {
   const navigate = useNavigate();
@@ -151,31 +146,28 @@ export default function InvitationBuilder() {
     setIsSubmitting(true);
 
     try {
-      // Get Coordinates from Address using Kakao Geocoder
-      const getCoordinates = (addr: string): Promise<{lat: number, lng: number}> => {
-        return new Promise((resolve, reject) => {
-          if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
-            reject(new Error('카카오 지도 API가 로드되지 않았습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.'));
-            return;
-          }
+      // 주소를 좌표로 변환한다. 지도 SDK는 이 시점에 처음 내려받는다.
+      const getCoordinates = async (addr: string): Promise<{ lat: number; lng: number }> => {
+        let maps: KakaoMaps;
+        try {
+          maps = await loadKakaoMaps();
+        } catch {
+          throw new Error('카카오 지도 API를 불러오지 못했습니다. 인터넷 연결을 확인하거나 잠시 후 다시 시도해주세요.');
+        }
 
+        return new Promise((resolve, reject) => {
+          // 콜백이 끝내 호출되지 않으면 저장 버튼이 멈춘 채로 남으므로 시간 제한을 둔다.
           const timeout = setTimeout(() => {
             reject(new Error('주소 검색 서버 응답 시간이 초과되었습니다. 잠시 후 다시 시도해주세요.'));
           }, 5000);
 
-          window.kakao.maps.load(() => {
-            const geocoder = new window.kakao.maps.services.Geocoder();
-            geocoder.addressSearch(addr, (result: any, status: any) => {
-              clearTimeout(timeout);
-              if (status === window.kakao.maps.services.Status.OK) {
-                resolve({
-                  lat: parseFloat(result[0].y),
-                  lng: parseFloat(result[0].x)
-                });
-              } else {
-                reject(new Error('주소를 지도에서 찾을 수 없습니다. 주소를 다시 확인해주세요.'));
-              }
-            });
+          new maps.services.Geocoder().addressSearch(addr, (result, status) => {
+            clearTimeout(timeout);
+            if (status === maps.services.Status.OK && result.length > 0) {
+              resolve({ lat: parseFloat(result[0].y), lng: parseFloat(result[0].x) });
+            } else {
+              reject(new Error('주소를 지도에서 찾을 수 없습니다. 주소를 다시 확인해주세요.'));
+            }
           });
         });
       };

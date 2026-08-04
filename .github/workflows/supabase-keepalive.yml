@@ -14,8 +14,10 @@ jobs:
     steps:
       - name: Ping Supabase REST API
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          # Vercel과 이름을 맞춰 VITE_ 접두사로 등록하는 경우가 많아 둘 다 받는다.
+          # (middleware.ts도 같은 방식으로 두 이름을 모두 허용한다.)
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL || secrets.VITE_SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY || secrets.VITE_SUPABASE_ANON_KEY }}
         run: |
           set -euo pipefail
 

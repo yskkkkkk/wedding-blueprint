@@ -10,6 +10,7 @@ import { Guestbook } from '@/components/Guestbook';
 import { RsvpForm } from '@/components/RsvpForm';
 import { ShareSection } from '@/components/ShareSection';
 import { useInvitationData } from '@/hooks/useInvitationData';
+import { useThemeFont } from '@/hooks/useThemeFont';
 import { Skeleton } from '@/components/shared/Skeleton';
 import classes from './InvitationPage.module.css';
 
@@ -36,6 +37,8 @@ function ErrorView({ icon, title, description, action }: ErrorViewProps) {
 export default function InvitationPage() {
   const { invitationSlug } = useParams<{ invitationSlug: string }>();
   const { data, loading, errorKind, retry } = useInvitationData(invitationSlug);
+  // 훅은 조건부 반환보다 앞서 호출해야 하므로 데이터가 없을 때도 안전하게 동작한다.
+  useThemeFont(data?.themeFont);
 
   if (loading) {
     return <Skeleton />;

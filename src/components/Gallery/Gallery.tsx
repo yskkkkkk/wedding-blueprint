@@ -105,7 +105,7 @@ export default function Gallery({ data }: GalleryProps) {
             variants={itemVariants}
             onClick={() => setSelectedIndex(index)}
           >
-            <img src={src} alt={`Gallery image ${index + 1}`} loading="lazy" />
+            <img src={src} alt={`Gallery image ${index + 1}`} loading="lazy" decoding="async" />
           </motion.div>
         ))}
       </motion.div>

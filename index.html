@@ -13,10 +13,12 @@
     <meta property="og:type" content="website" />
     <!-- Pretendard Font -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
-    <!-- Google Fonts (Naver, Baemin, etc) -->
+    <!--
+      구글 폰트는 청첩장이 선택한 1종만 런타임에 주입한다. → src/hooks/useThemeFont.ts
+      9종을 정적으로 불러오면 렌더가 차단되는데, 실제로 쓰이는 것은 1종뿐이다.
+    -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&family=Gowun+Dodum&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!--
       카카오 SDK(지도 / 공유)는 첫 화면에 필요하지 않으므로 여기서 불러오지 않는다.

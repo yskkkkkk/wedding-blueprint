@@ -43,7 +43,14 @@ export default function Cover({ data }: CoverProps) {
     <section className={classes.coverSection}>
       <FadeIn yOffset={20} duration={1}>
         <div className={classes.imageContainer}>
-          <img src={data.coverImage} alt="Wedding Cover" className={classes.mainImage} />
+          {/* 첫 화면에서 가장 큰 요소(LCP)이므로 우선순위를 높여 먼저 받는다. */}
+          <img
+            src={data.coverImage}
+            alt="Wedding Cover"
+            className={classes.mainImage}
+            fetchPriority="high"
+            decoding="async"
+          />
         </div>
       </FadeIn>
       

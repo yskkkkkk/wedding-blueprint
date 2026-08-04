@@ -15,7 +15,7 @@
 .title {
   font-size: 1.25rem;
   font-weight: 400;
-  color: var(--color-primary, #d4a373);
+  color: var(--color-primary);
   letter-spacing: 0.1em;
   margin-bottom: 0.5rem;
 }
@@ -133,7 +133,7 @@
 .entryName {
   font-weight: 600;
   font-size: 0.95rem;
-  color: #333;
+  color: var(--color-text-primary);
 }
 
 .entryRight {
@@ -198,13 +198,13 @@
 .modalTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text-primary);
   margin: 0;
 }
 
 .modalDesc {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--color-text-secondary);
   margin: 0;
 }
 

@@ -27,14 +27,14 @@
 .errorTitle {
   font-family: 'Noto Serif KR', serif;
   font-size: 1.5rem;
-  color: #333;
+  color: var(--color-text-primary);
   margin-bottom: 0.75rem;
   font-weight: 500;
 }
 
 .errorDesc {
   font-size: 1rem;
-  color: #666;
+  color: var(--color-text-secondary);
   line-height: 1.6;
 }
 
@@ -44,7 +44,7 @@
   font-family: inherit;
   font-size: 0.95rem;
   color: #fff;
-  background-color: var(--color-primary, #d4a373);
+  background-color: var(--color-primary);
   border: none;
   border-radius: 999px;
   cursor: pointer;
@@ -65,7 +65,7 @@
   height: 40px;
   border: 3px solid rgba(212, 163, 115, 0.2);
   border-radius: 50%;
-  border-top-color: var(--color-primary, #d4a373);
+  border-top-color: var(--color-primary);
   animation: spin 1s ease-in-out infinite;
 }
 

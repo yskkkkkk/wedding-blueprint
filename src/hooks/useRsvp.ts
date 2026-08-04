@@ -28,7 +28,7 @@ export function useRsvp(invitationSlug: string) {
 
       if (insertError) throw insertError;
       setSuccess(true);
-    } catch (err: any) {
+    } catch (err) {
       console.error('Error submitting RSVP:', err);
       setError('참석 의사 전달 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
     } finally {

@@ -72,7 +72,7 @@ export default function AdminDetail() {
   return (
     <div className={classes.dashboardContainer}>
       <header className={classes.dashboardHeader}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+        <div className={classes.headerTitleGroup}>
           <Link to="/admin/dashboard" className={classes.backBtn}>← 목록으로</Link>
           <h2>명단 관리 ({slug})</h2>
         </div>
@@ -125,7 +125,7 @@ export default function AdminDetail() {
               </thead>
               <tbody>
                 {rsvps.length === 0 ? (
-                  <tr><td colSpan={7} style={{ textAlign: 'center' }}>접수된 내역이 없습니다.</td></tr>
+                  <tr><td colSpan={7} className={classes.emptyCell}>접수된 내역이 없습니다.</td></tr>
                 ) : (
                   rsvps.map(r => (
                     <tr key={r.id}>
@@ -138,7 +138,7 @@ export default function AdminDetail() {
                       </td>
                       <td>{r.attending ? `${r.companion_count}명` : '-'}</td>
                       <td>{r.attending ? (r.meal_preference ? '식사 함' : '안 함') : '-'}</td>
-                      <td style={{ maxWidth: '200px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} title={r.message}>
+                      <td className={classes.messageCell} title={r.message}>
                         {r.message}
                       </td>
                       <td>{new Date(r.created_at).toLocaleString('ko-KR')}</td>
@@ -160,11 +160,11 @@ export default function AdminDetail() {
               </thead>
               <tbody>
                 {guestbooks.length === 0 ? (
-                  <tr><td colSpan={3} style={{ textAlign: 'center' }}>등록된 방명록이 없습니다.</td></tr>
+                  <tr><td colSpan={3} className={classes.emptyCell}>등록된 방명록이 없습니다.</td></tr>
                 ) : (
                   guestbooks.map(g => (
                     <tr key={g.id}>
-                      <td style={{ fontWeight: '500' }}>{g.name}</td>
+                      <td className={classes.nameCell}>{g.name}</td>
                       <td>{g.content}</td>
                       <td>{new Date(g.created_at).toLocaleString('ko-KR')}</td>
                     </tr>

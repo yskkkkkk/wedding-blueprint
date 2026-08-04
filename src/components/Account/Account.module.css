@@ -15,7 +15,7 @@
 .title {
   font-size: 1.25rem;
   font-weight: 400;
-  color: var(--color-primary, #d4a373);
+  color: var(--color-primary);
   letter-spacing: 0.1em;
   margin-bottom: 0.5rem;
 }
@@ -151,7 +151,7 @@
 
 .copyBtn {
   background-color: #f8f9fa;
-  color: #333;
+  color: var(--color-text-primary);
   border: 1px solid #dee2e6;
 }
 

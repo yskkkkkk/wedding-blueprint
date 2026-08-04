@@ -90,7 +90,7 @@
 }
 
 .weddingDayCell .dayText {
-  color: var(--color-primary, #d4a373);
+  color: var(--color-primary);
   font-weight: 600;
 }
 

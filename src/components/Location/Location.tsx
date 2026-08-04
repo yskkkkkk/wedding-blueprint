@@ -1,56 +1,66 @@
 import { useEffect, useRef, useState } from 'react';
 import FadeIn from '@/components/shared/FadeIn';
+import { loadKakaoMaps } from '@/services/kakaoSdk';
 import type { InvitationData } from '@/types';
 import classes from './Location.module.css';
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
 
 interface LocationProps {
   data: InvitationData;
 }
 
 export default function Location({ data }: LocationProps) {
+  const sectionRef = useRef<HTMLElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapError, setMapError] = useState(false);
+  const [mapInView, setMapInView] = useState(false);
   const { name, address, latitude, longitude } = data.location;
 
+  // 오시는 길은 스크롤을 내려야 보이는 영역이므로, 화면에 가까워질 때까지
+  // 지도 SDK를 내려받지 않는다.
   useEffect(() => {
-    // Check if the Kakao object is available
-    if (!window.kakao || !window.kakao.maps) {
-      console.error('Kakao map API not loaded. Check VITE_KAKAO_MAP_KEY in .env');
-      setMapError(true);
+    const target = sectionRef.current;
+    if (!target) return;
+
+    if (typeof IntersectionObserver === 'undefined') {
+      setMapInView(true);
       return;
     }
 
-    // API is loaded, we can reset error state
-    setMapError(false);
+    const observer = new IntersectionObserver(
+      entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          setMapInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '200px' }
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
-    // Initialize map after API is fully loaded
-    window.kakao.maps.load(() => {
-      if (!mapRef.current) return;
+  useEffect(() => {
+    if (!mapInView) return;
 
-      const position = new window.kakao.maps.LatLng(latitude, longitude);
-      
-      const mapOptions = {
-        center: position,
-        level: 3, // Zoom level
-      };
+    let cancelled = false;
+    loadKakaoMaps()
+      .then(maps => {
+        if (cancelled || !mapRef.current) return;
 
-      const map = new window.kakao.maps.Map(mapRef.current, mapOptions);
-
-      // Create a marker
-      const marker = new window.kakao.maps.Marker({
-        position,
+        const position = new maps.LatLng(latitude, longitude);
+        const map = new maps.Map(mapRef.current, { center: position, level: 3 });
+        new maps.Marker({ position }).setMap(map);
+        setMapError(false);
+      })
+      .catch(error => {
+        console.error('지도를 불러오지 못했습니다.', error);
+        if (!cancelled) setMapError(true);
       });
 
-      // Set marker on the map
-      marker.setMap(map);
-    });
-  }, [latitude, longitude]);
+    return () => {
+      cancelled = true;
+    };
+  }, [mapInView, latitude, longitude]);
 
   // Deep link URLs
   const kakaoUrl = `kakaomap://route?ep=${latitude},${longitude}&by=CAR`;
@@ -58,7 +68,7 @@ export default function Location({ data }: LocationProps) {
   const naverUrl = `nmap://route/car?dlat=${latitude}&dlng=${longitude}&dname=${encodeURIComponent(name)}&appname=wedding-blueprint`;
 
   return (
-    <section className={classes.section}>
+    <section className={classes.section} ref={sectionRef}>
       <FadeIn yOffset={20} duration={0.8}>
         <div className={classes.header}>
           <h2 className={classes.title}>LOCATION</h2>

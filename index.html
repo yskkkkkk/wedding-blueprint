@@ -18,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Jua&family=Gowun+Dodum&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Kakao Map SDK -->
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=%VITE_KAKAO_MAP_KEY%&libraries=services"></script>
-    <!-- Kakao JavaScript SDK -->
-    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4" crossorigin="anonymous"></script>
+    <!--
+      카카오 SDK(지도 / 공유)는 첫 화면에 필요하지 않으므로 여기서 불러오지 않는다.
+      렌더를 막지 않도록 실제 사용 시점에 주입한다. → src/services/kakaoSdk.ts
+      integrity 값도 해당 파일에서 관리한다.
+    -->
+    <link rel="preconnect" href="https://dapi.kakao.com" />
   </head>
   <body>
     <div id="root"></div>

@@ -1,20 +1,20 @@
-import type { ReactNode } from 'react';
+import { lazy, Suspense, type ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import { Cover } from '@/components/Cover';
 import { Greeting } from '@/components/Greeting';
 import Calendar from '@/components/Calendar';
-import { Gallery } from '@/components/Gallery';
-import { Location } from '@/components/Location';
-import { Account } from '@/components/Account';
-import { Guestbook } from '@/components/Guestbook';
-import { RsvpForm } from '@/components/RsvpForm';
-import { ShareSection } from '@/components/ShareSection';
 import { useInvitationData } from '@/hooks/useInvitationData';
 import { useThemeFont } from '@/hooks/useThemeFont';
 import { Skeleton } from '@/components/shared/Skeleton';
 import classes from './InvitationPage.module.css';
-
 import { FloatingTopButton } from '@/components/FloatingTopButton';
+
+const Gallery = lazy(() => import('@/components/Gallery').then(m => ({ default: m.Gallery })));
+const Location = lazy(() => import('@/components/Location').then(m => ({ default: m.Location })));
+const Account = lazy(() => import('@/components/Account').then(m => ({ default: m.Account })));
+const Guestbook = lazy(() => import('@/components/Guestbook').then(m => ({ default: m.Guestbook })));
+const RsvpForm = lazy(() => import('@/components/RsvpForm').then(m => ({ default: m.RsvpForm })));
+const ShareSection = lazy(() => import('@/components/ShareSection').then(m => ({ default: m.ShareSection })));
 
 interface ErrorViewProps {
   icon: ReactNode;
@@ -99,12 +99,15 @@ export default function InvitationPage() {
       <Cover data={data} />
       <Greeting data={data} />
       <Calendar weddingDate={data.weddingDate} />
-      <Gallery data={data} />
-      <Location data={data} />
-      <Account data={data} />
-      <RsvpForm invitationSlug={data.slug} />
-      <ShareSection data={data} />
-      <Guestbook data={data} />
+      
+      <Suspense fallback={<Skeleton />}>
+        <Gallery data={data} />
+        <Location data={data} />
+        <Account data={data} />
+        <RsvpForm invitationSlug={data.slug} />
+        <ShareSection data={data} />
+        <Guestbook data={data} />
+      </Suspense>
 
       {/* Floating Action Button */}
       <FloatingTopButton />

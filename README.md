@@ -7,9 +7,10 @@
 ## 2. 기술 스택
 *   **프론트엔드 (확정)**: React, TypeScript, Vite
 *   **라우팅 (확정)**: React Router DOM (동적 URL 파라미터 매핑)
-*   **백엔드/DB (확정)**: Supabase (PostgreSQL 기반 RDB)
+*   **백엔드/DB (확정)**: Supabase (PostgreSQL 기반 RDB). 하객 화면은 `@supabase/postgrest-js`(가벼운 데이터 조회 전용), 어드민 화면은 `@supabase/supabase-js`(로그인 포함 전체 클라이언트)로 분리 사용
 *   **스타일링 (확정)**: Vanilla CSS (CSS Variables) + Framer Motion (스크롤 애니메이션)
-*   **배포 (확정)**: Vercel (프론트엔드 호스팅)
+*   **배포 (확정)**: Vercel (프론트엔드 호스팅 + Edge Middleware). Node.js 22 이상 필요 (`package.json`의 `engines` 참고)
+*   **링크 미리보기**: 루트의 `middleware.ts`(Vercel Edge Middleware)가 카카오톡 등 크롤러 요청에만 개입해 청첩장별 OG 태그를 생성. 일반 하객 요청에는 영향 없음
 
 ## 3. AI 협업 프로토콜 (AI Protocol)
 본 프로젝트는 인간(기획/QA)과 AI가 주도적으로 코드를 작성하는 '바이브 코딩(Vibe Coding)' 방식으로 진행됩니다.
@@ -28,17 +29,23 @@
 프로젝트의 폴더 구조는 아래와 같으며, 구조 변경 시 이 섹션을 즉각 갱신해야 합니다.
 ```text
 /
-├── docs/                 # 기획/아키텍처 문서 (AGENTS, ARCHITECTURE, DATABASE_SCHEMA 등)
+├── .github/workflows/    # deploy.yml(Vercel 배포), supabase-keepalive.yml(DB 자동 일시정지 방지)
+├── docs/                 # 기획/아키텍처 문서 (AGENTS, CONTENT_STYLE_GUIDE 등)
 ├── src/
 │   ├── assets/           # 정적 에셋 (이미지, 아이콘 등)
 │   ├── components/       # 청첩장 UI 컴포넌트 (Cover, Gallery, Guestbook 등)
 │   ├── hooks/            # React Custom Hooks
 │   ├── pages/            # 라우팅 페이지 (예: InvitationPage.tsx)
-│   ├── services/         # 외부 API 연동 (Supabase 클라이언트 등)
-│   ├── types/            # TypeScript 인터페이스 정의
+│   ├── services/         # 외부 연동 클라이언트
+│   │   ├── db.ts             # 하객용 데이터 조회 전용 클라이언트 (postgrest-js)
+│   │   ├── supabase.ts       # 어드민용 전체 클라이언트 (auth 포함, supabase-js)
+│   │   ├── supabaseEnv.ts    # 위 두 클라이언트가 공유하는 환경 변수 읽기
+│   │   └── kakaoSdk.ts       # 카카오 지도/공유 SDK 온디맨드 로더 (필요 시점에만 스크립트 주입)
+│   ├── types/            # TypeScript 인터페이스 정의 (kakao.d.ts: 카카오 SDK 전역 타입)
 │   ├── index.css         # 글로벌 스타일 및 CSS 변수
 │   ├── main.tsx          # 앱 엔트리 포인트
 │   └── App.tsx           # 라우팅 최상단 컴포넌트
+├── middleware.ts         # Vercel Edge Middleware — 크롤러 요청에만 청첩장별 OG 태그 응답
 ├── BACKLOG.md            # 작업 현황, 의사결정 및 AI 인수인계 기록
 └── README.md             # 프로젝트 헌장 (현재 문서)
 ```

@@ -84,9 +84,8 @@
   position: absolute;
   top: -6px;
   font-size: 2rem;
-  color: rgba(212, 163, 115, 0.2);
+  color: rgba(212, 163, 115, 0.25);
   z-index: 1;
-  animation: pulse 2s infinite ease-in-out;
 }
 
 .weddingDayCell .dayText {
@@ -103,19 +102,4 @@
   letter-spacing: 0.05em;
   padding-top: 1rem;
   border-top: 1px solid #f0f0f0;
-}
-
-@keyframes pulse {
-  0% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.15);
-    opacity: 0.4;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 0.2;
-  }
 }

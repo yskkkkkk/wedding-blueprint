@@ -17,12 +17,18 @@ export default function InvitationBuilder() {
     weddingDate: '',
     groomName: '',
     groomRelation: '',
+    groomPhone: '',
     brideName: '',
     brideRelation: '',
+    bridePhone: '',
     groomFather: '',
+    groomFatherPhone: '',
     groomMother: '',
+    groomMotherPhone: '',
     brideFather: '',
+    brideFatherPhone: '',
     brideMother: '',
+    brideMotherPhone: '',
     weddingHall: '',
     address: '',
     coverImage: '',
@@ -88,12 +94,18 @@ export default function InvitationBuilder() {
           weddingDate: localISOTime,
           groomName: data.groom?.name || '',
           groomRelation: data.groom?.relation || '',
+          groomPhone: data.groom?.phone || '',
           brideName: data.bride?.name || '',
           brideRelation: data.bride?.relation || '',
+          bridePhone: data.bride?.phone || '',
           groomFather: data.groom_parents?.father?.name || '',
+          groomFatherPhone: data.groom_parents?.father?.phone || '',
           groomMother: data.groom_parents?.mother?.name || '',
+          groomMotherPhone: data.groom_parents?.mother?.phone || '',
           brideFather: data.bride_parents?.father?.name || '',
+          brideFatherPhone: data.bride_parents?.father?.phone || '',
           brideMother: data.bride_parents?.mother?.name || '',
+          brideMotherPhone: data.bride_parents?.mother?.phone || '',
           weddingHall: data.location?.name || '',
           address: data.location?.address || '',
           coverImage: data.cover_image || '',
@@ -125,7 +137,9 @@ export default function InvitationBuilder() {
 
     const {
       slug, weddingDate, groomName, brideName, weddingHall, address, coverImage,
-      groomRelation, brideRelation, groomFather, groomMother, brideFather, brideMother,
+      groomRelation, brideRelation, groomPhone, bridePhone,
+      groomFather, groomFatherPhone, groomMother, groomMotherPhone,
+      brideFather, brideFatherPhone, brideMother, brideMotherPhone,
       greetingTitle, greetingContent, galleryUrls,
       groomBankName, groomAccountNumber, groomHolder, groomTossLink, groomKakaopayLink,
       brideBankName, brideAccountNumber, brideHolder, brideTossLink, brideKakaopayLink,
@@ -181,6 +195,7 @@ export default function InvitationBuilder() {
         groom: { 
           name: groomName, 
           relation: groomRelation,
+          phone: groomPhone ? groomPhone.trim() : undefined,
           bank: groomBankName ? { name: groomBankName, accountNumber: groomAccountNumber, holder: groomHolder } : undefined,
           tossLink: groomTossLink || undefined,
           kakaopayLink: groomKakaopayLink || undefined,
@@ -188,12 +203,19 @@ export default function InvitationBuilder() {
         bride: { 
           name: brideName, 
           relation: brideRelation,
+          phone: bridePhone ? bridePhone.trim() : undefined,
           bank: brideBankName ? { name: brideBankName, accountNumber: brideAccountNumber, holder: brideHolder } : undefined,
           tossLink: brideTossLink || undefined,
           kakaopayLink: brideKakaopayLink || undefined,
         },
-        groom_parents: { father: { name: groomFather }, mother: { name: groomMother } },
-        bride_parents: { father: { name: brideFather }, mother: { name: brideMother } },
+        groom_parents: { 
+          father: { name: groomFather, phone: groomFatherPhone ? groomFatherPhone.trim() : undefined }, 
+          mother: { name: groomMother, phone: groomMotherPhone ? groomMotherPhone.trim() : undefined } 
+        },
+        bride_parents: { 
+          father: { name: brideFather, phone: brideFatherPhone ? brideFatherPhone.trim() : undefined }, 
+          mother: { name: brideMother, phone: brideMotherPhone ? brideMotherPhone.trim() : undefined } 
+        },
         location: { name: weddingHall, address: address, latitude: coords.lat, longitude: coords.lng },
         greeting: { title: greetingTitle || '초대합니다', content: greetingContent || '두 사람이 만나 하나가 되는 날...' },
         cover_image: coverImage,
@@ -250,18 +272,28 @@ export default function InvitationBuilder() {
               <FormInput label="신랑 이름 *" name="groomName" value={formData.groomName} onChange={handleChange} required />
               <FormInput label="관계" name="groomRelation" placeholder="예: 장남" value={formData.groomRelation} onChange={handleChange} />
             </div>
+            <FormInput label="신랑 연락처 (선택)" name="groomPhone" type="tel" placeholder="010-0000-0000" value={formData.groomPhone} onChange={handleChange} />
             <div className={classes.formRow}>
               <FormInput label="신랑 아버지" name="groomFather" value={formData.groomFather} onChange={handleChange} />
+              <FormInput label="아버지 연락처 (선택)" name="groomFatherPhone" type="tel" placeholder="010-0000-0000" value={formData.groomFatherPhone} onChange={handleChange} />
+            </div>
+            <div className={classes.formRow}>
               <FormInput label="신랑 어머니" name="groomMother" value={formData.groomMother} onChange={handleChange} />
+              <FormInput label="어머니 연락처 (선택)" name="groomMotherPhone" type="tel" placeholder="010-0000-0000" value={formData.groomMotherPhone} onChange={handleChange} />
             </div>
             <hr style={{ margin: '1rem 0', border: 'none', borderTop: '1px dashed #ccc' }} />
             <div className={classes.formRow}>
               <FormInput label="신부 이름 *" name="brideName" value={formData.brideName} onChange={handleChange} required />
               <FormInput label="관계" name="brideRelation" placeholder="예: 차녀" value={formData.brideRelation} onChange={handleChange} />
             </div>
+            <FormInput label="신부 연락처 (선택)" name="bridePhone" type="tel" placeholder="010-0000-0000" value={formData.bridePhone} onChange={handleChange} />
             <div className={classes.formRow}>
               <FormInput label="신부 아버지" name="brideFather" value={formData.brideFather} onChange={handleChange} />
+              <FormInput label="아버지 연락처 (선택)" name="brideFatherPhone" type="tel" placeholder="010-0000-0000" value={formData.brideFatherPhone} onChange={handleChange} />
+            </div>
+            <div className={classes.formRow}>
               <FormInput label="신부 어머니" name="brideMother" value={formData.brideMother} onChange={handleChange} />
+              <FormInput label="어머니 연락처 (선택)" name="brideMotherPhone" type="tel" placeholder="010-0000-0000" value={formData.brideMotherPhone} onChange={handleChange} />
             </div>
           </section>
 

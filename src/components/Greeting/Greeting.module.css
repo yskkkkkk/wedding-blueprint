@@ -84,3 +84,35 @@
   color: var(--color-text-primary);
   margin-left: 0.2rem;
 }
+
+.contactButtonWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+
+.contactButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  background-color: var(--color-background-alt, #ffffff);
+  border: 1px solid rgba(212, 163, 115, 0.35);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-serif);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.contactButton:hover,
+.contactButton:active {
+  background-color: var(--color-primary);
+  color: #ffffff;
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(212, 163, 115, 0.25);
+}

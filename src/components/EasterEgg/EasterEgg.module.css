@@ -1,0 +1,140 @@
+/* --- 평소(normal) 상태: 사이트 톤에 맞춘 절제된 트리거 --- */
+.triggerSection {
+  width: 100%;
+  padding: 2rem 1.5rem 3rem;
+  text-align: center;
+}
+
+.triggerHint {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #666);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.triggerRow {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.triggerButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  border: 1px solid var(--color-border, #e8e5e1);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.triggerButton:hover {
+  border-color: var(--color-primary, #d4af37);
+  color: var(--color-primary, #d4af37);
+}
+
+/* --- 특수 모드 공통: 어디서든 눈에 띄는 복귀 버튼 --- */
+.backButton {
+  position: fixed;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 100000;
+  background: #111;
+  color: #fff;
+  border: 2px solid #fff;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.75rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.backButton:hover {
+  background: #333;
+}
+
+/* --- 개발자 버전: 상단 고정 부트 시퀀스 배너 --- */
+.bootBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  background: #000;
+  color: #33ff66;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.68rem;
+  line-height: 1.3;
+  padding: 0.5rem 4.5rem 0.5rem 0.75rem;
+  border-bottom: 1px solid #33ff66;
+  white-space: pre-wrap;
+}
+
+.bootCursor {
+  display: inline-block;
+  width: 0.55em;
+  background: #33ff66;
+  animation: eggBlink 1s step-start infinite;
+}
+
+/* --- 디자이너 버전: 상단 고정 마퀴 배너 --- */
+.marqueeBanner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+  height: 2.4rem;
+  overflow: hidden;
+  background: #000;
+  border-bottom: 4px solid #ffff00;
+  display: flex;
+  align-items: center;
+}
+
+.marqueeTrack {
+  display: flex;
+  width: max-content;
+  animation: eggMarquee 14s linear infinite;
+}
+
+.marqueeItem {
+  padding-right: 3rem;
+  font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+  font-weight: 900;
+  font-size: 0.95rem;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* --- 디자이너 버전: 커서를 따라다니는 반짝이 --- */
+.sparkleLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 1.1rem;
+  animation: eggSparkleFall 0.8s ease-out forwards;
+}
+
+@keyframes eggBlink {
+  50% { opacity: 0; }
+}
+
+@keyframes eggMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes eggSparkleFall {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(30px) scale(0.4); }
+}

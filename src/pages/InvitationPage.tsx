@@ -1,4 +1,4 @@
-import { lazy, Suspense, type ReactNode } from 'react';
+import { lazy, Suspense, useState, type ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import { Cover } from '@/components/Cover';
 import { Greeting } from '@/components/Greeting';
@@ -8,6 +8,8 @@ import { useThemeFont } from '@/hooks/useThemeFont';
 import { Skeleton } from '@/components/shared/Skeleton';
 import classes from './InvitationPage.module.css';
 import { FloatingTopButton } from '@/components/FloatingTopButton';
+import { EasterEgg, type EasterEggMode } from '@/components/EasterEgg';
+import '@/styles/prankModes.css';
 
 const Gallery = lazy(() => import('@/components/Gallery').then(m => ({ default: m.Gallery })));
 const Location = lazy(() => import('@/components/Location').then(m => ({ default: m.Location })));
@@ -39,6 +41,7 @@ export default function InvitationPage() {
   const { data, loading, errorKind, retry } = useInvitationData(invitationSlug);
   // 훅은 조건부 반환보다 앞서 호출해야 하므로 데이터가 없을 때도 안전하게 동작한다.
   useThemeFont(data?.themeFont);
+  const [eggMode, setEggMode] = useState<EasterEggMode>('normal');
 
   if (loading) {
     return <Skeleton />;
@@ -94,12 +97,17 @@ export default function InvitationPage() {
     fontFamily: data.themeFont || "'Pretendard Variable', Pretendard, sans-serif"
   } as React.CSSProperties;
 
+  // 이스터에그 모드는 src/styles/prankModes.css의 클래스가 --color-*,
+  // --font-family-* 변수를 다시 정의하는 방식으로 하위 컴포넌트를 리스킨한다.
+  // (일반 CSS이므로 CSS 모듈처럼 클래스명이 해시되지 않는다.)
+  const eggClassName = eggMode === 'developer' ? 'developerMode' : eggMode === 'designer' ? 'designerMode' : undefined;
+
   return (
-    <div style={fontStyle}>
+    <div style={fontStyle} className={eggClassName}>
       <Cover data={data} />
       <Greeting data={data} />
       <Calendar weddingDate={data.weddingDate} />
-      
+
       <Suspense fallback={<Skeleton />}>
         <Gallery data={data} />
         <Location data={data} />
@@ -108,6 +116,8 @@ export default function InvitationPage() {
         <ShareSection data={data} />
         <Guestbook data={data} />
       </Suspense>
+
+      <EasterEgg mode={eggMode} onModeChange={setEggMode} />
 
       {/* Floating Action Button */}
       <FloatingTopButton />

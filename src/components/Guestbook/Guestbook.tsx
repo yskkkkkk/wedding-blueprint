@@ -68,76 +68,73 @@ export default function Guestbook({ data }: GuestbookProps) {
         </div>
       </FadeIn>
 
-      <FadeIn yOffset={20} duration={0.8} delay={0.2}>
-        <div className={classes.container}>
-          
-          <form className={classes.form} onSubmit={handleSubmit}>
-            <div className={classes.formRow}>
-              <input 
-                type="text" 
-                placeholder="이름" 
-                className={classes.input} 
-                value={name}
-                onChange={e => setName(e.target.value)}
-                maxLength={20}
-              />
-              <input 
-                type="password" 
-                placeholder="비밀번호" 
-                className={classes.input} 
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                maxLength={20}
-              />
-            </div>
-            <textarea 
-              placeholder="축하의 메시지를 남겨주세요." 
-              className={classes.textarea}
-              value={content}
-              onChange={e => setContent(e.target.value)}
-              maxLength={300}
+      <FadeIn yOffset={20} duration={0.8} delay={0.2} className={classes.container}>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <div className={classes.formRow}>
+            <input
+              type="text"
+              placeholder="이름"
+              className={classes.input}
+              value={name}
+              onChange={e => setName(e.target.value)}
+              maxLength={20}
             />
-            <button type="submit" className={classes.submitBtn} disabled={isSubmitting}>
-              {isSubmitting ? '등록 중...' : '등록하기'}
-            </button>
-          </form>
-
-          <div className={classes.list}>
-            {loading && <p className={classes.statusText}>방명록을 불러오는 중입니다...</p>}
-            {error && <p className={classes.statusText}>방명록을 불러오지 못했습니다.</p>}
-            {!loading && entries.length === 0 && (
-              <p className={classes.statusText}>가장 먼저 축하 메시지를 남겨보세요!</p>
-            )}
-
-            <AnimatePresence>
-              {entries.map(entry => (
-                <motion.div 
-                  key={entry.id}
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className={classes.entryCard}
-                >
-                  <div className={classes.entryHeader}>
-                    <span className={classes.entryName}>{entry.name}</span>
-                    <div className={classes.entryRight}>
-                      <span className={classes.entryDate}>
-                        {new Date(entry.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}
-                      </span>
-                      <button 
-                        className={classes.deleteIconBtn}
-                        onClick={() => setDeleteModalOpen(entry.id)}
-                        aria-label="삭제"
-                      >
-                        ✕
-                      </button>
-                    </div>
-                  </div>
-                  <p className={classes.entryContent}>{entry.content}</p>
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            <input
+              type="password"
+              placeholder="비밀번호"
+              className={classes.input}
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              maxLength={20}
+            />
           </div>
+          <textarea
+            placeholder="축하의 메시지를 남겨주세요."
+            className={classes.textarea}
+            value={content}
+            onChange={e => setContent(e.target.value)}
+            maxLength={300}
+          />
+          <button type="submit" className={classes.submitBtn} disabled={isSubmitting}>
+            {isSubmitting ? '등록 중...' : '등록하기'}
+          </button>
+        </form>
+
+        <div className={classes.list}>
+          {loading && <p className={classes.statusText}>방명록을 불러오는 중입니다...</p>}
+          {error && <p className={classes.statusText}>방명록을 불러오지 못했습니다.</p>}
+          {!loading && entries.length === 0 && (
+            <p className={classes.statusText}>가장 먼저 축하 메시지를 남겨보세요!</p>
+          )}
+
+          <AnimatePresence>
+            {entries.map(entry => (
+              <motion.div
+                key={entry.id}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                className={classes.entryCard}
+              >
+                <div className={classes.entryHeader}>
+                  <span className={classes.entryName}>{entry.name}</span>
+                  <div className={classes.entryRight}>
+                    <span className={classes.entryDate}>
+                      {new Date(entry.created_at).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })}
+                    </span>
+                    <button
+                      className={classes.deleteIconBtn}
+                      onClick={() => setDeleteModalOpen(entry.id)}
+                      aria-label="삭제"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+                <p className={classes.entryContent}>{entry.content}</p>
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </div>
       </FadeIn>
 

@@ -9,6 +9,7 @@ import { Skeleton } from '@/components/shared/Skeleton';
 import classes from './InvitationPage.module.css';
 import { FloatingTopButton } from '@/components/FloatingTopButton';
 import { EasterEgg, type EasterEggMode } from '@/components/EasterEgg';
+import { EasterEggModeContext } from '@/context/EasterEggModeContext';
 import '@/styles/prankModes.css';
 
 const Gallery = lazy(() => import('@/components/Gallery').then(m => ({ default: m.Gallery })));
@@ -103,24 +104,26 @@ export default function InvitationPage() {
   const eggClassName = eggMode === 'developer' ? 'developerMode' : eggMode === 'designer' ? 'designerMode' : undefined;
 
   return (
-    <div style={fontStyle} className={eggClassName}>
-      <Cover data={data} />
-      <Greeting data={data} />
-      <Calendar weddingDate={data.weddingDate} />
+    <EasterEggModeContext.Provider value={eggMode}>
+      <div style={fontStyle} className={eggClassName}>
+        <Cover data={data} />
+        <Greeting data={data} />
+        <Calendar weddingDate={data.weddingDate} />
 
-      <Suspense fallback={<Skeleton />}>
-        <Gallery data={data} />
-        <Location data={data} />
-        <Account data={data} />
-        <RsvpForm invitationSlug={data.slug} />
-        <ShareSection data={data} />
-        <Guestbook data={data} />
-      </Suspense>
+        <Suspense fallback={<Skeleton />}>
+          <Gallery data={data} />
+          <Location data={data} />
+          <Account data={data} />
+          <RsvpForm invitationSlug={data.slug} />
+          <ShareSection data={data} />
+          <Guestbook data={data} />
+        </Suspense>
 
-      <EasterEgg mode={eggMode} onModeChange={setEggMode} />
+        <EasterEgg mode={eggMode} onModeChange={setEggMode} />
 
-      {/* Floating Action Button */}
-      <FloatingTopButton />
-    </div>
+        {/* Floating Action Button */}
+        <FloatingTopButton />
+      </div>
+    </EasterEggModeContext.Provider>
   );
 }

@@ -76,12 +76,14 @@ export default function RsvpForm({ invitationSlug }: RsvpFormProps) {
             <>
               <div className={classes.inputGroup}>
                 <label>동반 인원 (본인 제외)</label>
+                {/* "4명 이상"처럼 열린 항목을 두면 저장은 4로 되는데 집계는 정확히
+                    4명으로 계산되어, 일행이 많을수록 식장에 적은 인원을 통보하게 된다.
+                    선택지를 실제 인원으로만 구성한다. */}
                 <select value={formData.companion_count} onChange={e => setFormData({...formData, companion_count: Number(e.target.value)})}>
                   <option value={0}>없음 (0명)</option>
-                  <option value={1}>1명</option>
-                  <option value={2}>2명</option>
-                  <option value={3}>3명</option>
-                  <option value={4}>4명 이상</option>
+                  {Array.from({ length: 9 }, (_, i) => i + 1).map(n => (
+                    <option key={n} value={n}>{n}명</option>
+                  ))}
                 </select>
               </div>
 

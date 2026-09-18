@@ -112,7 +112,7 @@ export default function AdminDetail() {
         <section className={classes.statsSection}>
           <div className={classes.statCard}>
             <div className={classes.statLabel}>총 참석 팀 (RSVP)</div>
-            <div className={classes.statValue}>{totalTeams}명</div>
+            <div className={classes.statValue}>{totalTeams}팀</div>
           </div>
           <div className={classes.statCard}>
             <div className={classes.statLabel}>총 참석 인원 (동반자 포함)</div>
@@ -166,7 +166,7 @@ export default function AdminDetail() {
                           {r.attending ? '참석' : '불참'}
                         </span>
                       </td>
-                      <td>{r.attending ? `${r.companion_count}명` : '-'}</td>
+                      <td>{r.attending ? `${r.companion_count ?? 0}명` : '-'}</td>
                       <td>{r.attending ? (r.meal_preference ? '식사 함' : '안 함') : '-'}</td>
                       <td className={classes.messageCell} title={r.message}>
                         {r.message}

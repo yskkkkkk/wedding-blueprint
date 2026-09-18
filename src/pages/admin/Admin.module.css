@@ -142,6 +142,11 @@
   opacity: 0.9;
 }
 
+.createBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));

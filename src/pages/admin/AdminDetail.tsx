@@ -21,6 +21,39 @@ interface GuestbookEntry {
   created_at: string;
 }
 
+// 쉼표·따옴표·줄바꿈이 들어간 메시지가 열을 깨뜨리지 않도록 항상 따옴표로 감싼다.
+function toCsvField(value: string | number) {
+  return `"${String(value).replace(/"/g, '""')}"`;
+}
+
+function downloadRsvpCsv(slug: string, rsvps: RsvpEntry[]) {
+  const header = ['이름', '연락처', '참석여부', '동반인원', '본인포함 인원', '식사여부', '메시지', '접수일시'];
+  const rows = rsvps.map(r => {
+    const companions = r.companion_count ?? 0;
+    return [
+      r.name,
+      r.contact,
+      r.attending ? '참석' : '불참',
+      r.attending ? companions : 0,
+      r.attending ? companions + 1 : 0,
+      r.attending ? (r.meal_preference ? '식사 함' : '안 함') : '-',
+      r.message ?? '',
+      new Date(r.created_at).toLocaleString('ko-KR'),
+    ];
+  });
+
+  const csv = [header, ...rows].map(row => row.map(toCsvField).join(',')).join('\r\n');
+
+  // BOM이 없으면 엑셀이 UTF-8로 인식하지 못해 한글이 전부 깨진다.
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `rsvp_${slug}_${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function AdminDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
@@ -106,6 +139,14 @@ export default function AdminDetail() {
           <Link to="/admin/dashboard" className={classes.backBtn}>← 목록으로</Link>
           <h2>명단 관리 ({slug})</h2>
         </div>
+        <button
+          type="button"
+          className={classes.createBtn}
+          onClick={() => downloadRsvpCsv(slug ?? 'invitation', rsvps)}
+          disabled={rsvps.length === 0}
+        >
+          참석자 명단 내려받기 (CSV)
+        </button>
       </header>
       
       <main className={classes.dashboardMain}>

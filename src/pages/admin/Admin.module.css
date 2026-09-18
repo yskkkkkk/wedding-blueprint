@@ -92,6 +92,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  /* 좁은 화면에서 제목과 버튼이 서로를 찌그러뜨리지 않고 아래로 내려가게 한다. */
+  flex-wrap: wrap;
+  gap: 0.75rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
@@ -140,6 +143,11 @@
 
 .createBtn:hover {
   opacity: 0.9;
+}
+
+.createBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 .cardGrid {

@@ -21,14 +21,51 @@ interface GuestbookEntry {
   created_at: string;
 }
 
+// 쉼표·따옴표·줄바꿈이 들어간 메시지가 열을 깨뜨리지 않도록 항상 따옴표로 감싼다.
+function toCsvField(value: string | number) {
+  return `"${String(value).replace(/"/g, '""')}"`;
+}
+
+function downloadRsvpCsv(slug: string, rsvps: RsvpEntry[]) {
+  const header = ['이름', '연락처', '참석여부', '동반인원', '본인포함 인원', '식사여부', '메시지', '접수일시'];
+  const rows = rsvps.map(r => {
+    const companions = r.companion_count ?? 0;
+    return [
+      r.name,
+      r.contact,
+      r.attending ? '참석' : '불참',
+      r.attending ? companions : 0,
+      r.attending ? companions + 1 : 0,
+      r.attending ? (r.meal_preference ? '식사 함' : '안 함') : '-',
+      r.message ?? '',
+      new Date(r.created_at).toLocaleString('ko-KR'),
+    ];
+  });
+
+  const csv = [header, ...rows].map(row => row.map(toCsvField).join(',')).join('\r\n');
+
+  // BOM이 없으면 엑셀이 UTF-8로 인식하지 못해 한글이 전부 깨진다.
+  const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `rsvp_${slug}_${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
 export default function AdminDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
 
   const [authChecked, setAuthChecked] = useState(false);
   const [loading, setLoading] = useState(true);
+  // 조회에 실패했는데 빈 배열을 그대로 렌더링하면 "참석 0명"이 되어 실제 0명과
+  // 구분되지 않는다. 이 화면의 숫자는 식장에 통보하는 인원수라 조용히 틀리면 안 된다.
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const [activeTab, setActiveTab] = useState<'rsvp' | 'guestbook'>('rsvp');
-  
+
   const [rsvps, setRsvps] = useState<RsvpEntry[]>([]);
   const [guestbooks, setGuestbooks] = useState<GuestbookEntry[]>([]);
 
@@ -42,7 +79,13 @@ export default function AdminDetail() {
       }
       setAuthChecked(true);
 
-      if (!slug) return;
+      if (!slug) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setLoadFailed(false);
 
       // 2. Fetch Data
       const [rsvpRes, guestbookRes] = await Promise.all([
@@ -50,17 +93,37 @@ export default function AdminDetail() {
         supabase.from('guestbook').select('*').eq('invitation_slug', slug).order('created_at', { ascending: false })
       ]);
 
-      if (rsvpRes.data) setRsvps(rsvpRes.data);
-      if (guestbookRes.data) setGuestbooks(guestbookRes.data);
-      
+      if (rsvpRes.error || guestbookRes.error) {
+        console.error('명단 조회 실패:', rsvpRes.error ?? guestbookRes.error);
+        setLoadFailed(true);
+        setLoading(false);
+        return;
+      }
+
+      setRsvps(rsvpRes.data ?? []);
+      setGuestbooks(guestbookRes.data ?? []);
+
       setLoading(false);
     }
 
     checkAuthAndFetchData();
-  }, [navigate, slug]);
+  }, [navigate, slug, reloadKey]);
 
   if (!authChecked || loading) {
     return <div className={classes.adminContainer}>Loading...</div>;
+  }
+
+  if (loadFailed) {
+    return (
+      <div className={classes.adminContainer}>
+        <p>명단을 불러오지 못했습니다.</p>
+        <p>이 화면의 인원수는 식장에 전달하는 값이므로, 조회에 실패했을 때는 숫자를 표시하지 않습니다.</p>
+        <button type="button" onClick={() => setReloadKey(key => key + 1)}>
+          다시 불러오기
+        </button>
+        <Link to="/admin/dashboard">← 목록으로</Link>
+      </div>
+    );
   }
 
   // Calculate stats
@@ -76,13 +139,21 @@ export default function AdminDetail() {
           <Link to="/admin/dashboard" className={classes.backBtn}>← 목록으로</Link>
           <h2>명단 관리 ({slug})</h2>
         </div>
+        <button
+          type="button"
+          className={classes.createBtn}
+          onClick={() => downloadRsvpCsv(slug ?? 'invitation', rsvps)}
+          disabled={rsvps.length === 0}
+        >
+          참석자 명단 내려받기 (CSV)
+        </button>
       </header>
       
       <main className={classes.dashboardMain}>
         <section className={classes.statsSection}>
           <div className={classes.statCard}>
             <div className={classes.statLabel}>총 참석 팀 (RSVP)</div>
-            <div className={classes.statValue}>{totalTeams}명</div>
+            <div className={classes.statValue}>{totalTeams}팀</div>
           </div>
           <div className={classes.statCard}>
             <div className={classes.statLabel}>총 참석 인원 (동반자 포함)</div>
@@ -136,7 +207,7 @@ export default function AdminDetail() {
                           {r.attending ? '참석' : '불참'}
                         </span>
                       </td>
-                      <td>{r.attending ? `${r.companion_count}명` : '-'}</td>
+                      <td>{r.attending ? `${r.companion_count ?? 0}명` : '-'}</td>
                       <td>{r.attending ? (r.meal_preference ? '식사 함' : '안 함') : '-'}</td>
                       <td className={classes.messageCell} title={r.message}>
                         {r.message}

@@ -27,8 +27,12 @@ export default function AdminDetail() {
 
   const [authChecked, setAuthChecked] = useState(false);
   const [loading, setLoading] = useState(true);
+  // 조회에 실패했는데 빈 배열을 그대로 렌더링하면 "참석 0명"이 되어 실제 0명과
+  // 구분되지 않는다. 이 화면의 숫자는 식장에 통보하는 인원수라 조용히 틀리면 안 된다.
+  const [loadFailed, setLoadFailed] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const [activeTab, setActiveTab] = useState<'rsvp' | 'guestbook'>('rsvp');
-  
+
   const [rsvps, setRsvps] = useState<RsvpEntry[]>([]);
   const [guestbooks, setGuestbooks] = useState<GuestbookEntry[]>([]);
 
@@ -42,7 +46,13 @@ export default function AdminDetail() {
       }
       setAuthChecked(true);
 
-      if (!slug) return;
+      if (!slug) {
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setLoadFailed(false);
 
       // 2. Fetch Data
       const [rsvpRes, guestbookRes] = await Promise.all([
@@ -50,17 +60,37 @@ export default function AdminDetail() {
         supabase.from('guestbook').select('*').eq('invitation_slug', slug).order('created_at', { ascending: false })
       ]);
 
-      if (rsvpRes.data) setRsvps(rsvpRes.data);
-      if (guestbookRes.data) setGuestbooks(guestbookRes.data);
-      
+      if (rsvpRes.error || guestbookRes.error) {
+        console.error('명단 조회 실패:', rsvpRes.error ?? guestbookRes.error);
+        setLoadFailed(true);
+        setLoading(false);
+        return;
+      }
+
+      setRsvps(rsvpRes.data ?? []);
+      setGuestbooks(guestbookRes.data ?? []);
+
       setLoading(false);
     }
 
     checkAuthAndFetchData();
-  }, [navigate, slug]);
+  }, [navigate, slug, reloadKey]);
 
   if (!authChecked || loading) {
     return <div className={classes.adminContainer}>Loading...</div>;
+  }
+
+  if (loadFailed) {
+    return (
+      <div className={classes.adminContainer}>
+        <p>명단을 불러오지 못했습니다.</p>
+        <p>이 화면의 인원수는 식장에 전달하는 값이므로, 조회에 실패했을 때는 숫자를 표시하지 않습니다.</p>
+        <button type="button" onClick={() => setReloadKey(key => key + 1)}>
+          다시 불러오기
+        </button>
+        <Link to="/admin/dashboard">← 목록으로</Link>
+      </div>
+    );
   }
 
   // Calculate stats
